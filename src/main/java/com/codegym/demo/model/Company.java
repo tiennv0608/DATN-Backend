@@ -1,11 +1,9 @@
 package com.codegym.demo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Company {
@@ -21,12 +19,14 @@ public class Company {
     @NotBlank
     private String password;
     @NotBlank
+    @Lob
     private String image;
 
     private String phone;
 
     private String companyCode;
     @NotBlank
+    @Lob
     private String description;
 
     private String address;
@@ -59,6 +59,16 @@ public class Company {
         this.linkGoogle = linkGoogle;
         this.website = website;
         this.type = type;
+    }
+
+    public Company(@NotBlank @Size(min = 3, max = 50) String name,
+                   @NotBlank @Size(max = 50) @Email String email,
+                   @NotBlank @Size(min = 6, max = 100) String encode,
+                   @NotBlank String description) {
+        this.companyName = name;
+        this.email = email;
+        this.password = encode;
+        this.description = description;
     }
 
     public Long getId() {

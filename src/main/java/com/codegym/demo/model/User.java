@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -32,6 +34,14 @@ public class User {
         this.password = password;
         this.phone = phone;
         this.type = type;
+    }
+
+    public User(@NotBlank @Size(min = 3, max = 50) String name,
+                @NotBlank @Size(max = 50) @Email String email,
+                @NotBlank @Size(min = 6, max = 100) String encode) {
+        this.name = name;
+        this.email = email;
+        this.password = encode;
     }
 
     public Long getId() {
