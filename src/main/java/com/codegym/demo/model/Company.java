@@ -1,11 +1,11 @@
 package com.codegym.demo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.codegym.demo.constant.Constant;
+
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Company {
@@ -21,12 +21,14 @@ public class Company {
     @NotBlank
     private String password;
     @NotBlank
+    @Lob
     private String image;
 
     private String phone;
 
     private String companyCode;
     @NotBlank
+    @Lob
     private String description;
 
     private String address;
@@ -39,12 +41,12 @@ public class Company {
 
     private String website;
 
-    private String type;
+    private Constant.TypeName type;
 
     public Company() {
     }
 
-    public Company(String companyName, String shortName, String email, String password, String image, String phone, String companyCode, String description, String address, int numberOfStaff, String branch, String linkGoogle, String website, String type) {
+    public Company(String companyName, String shortName, String email, String password, String image, String phone, String companyCode, String description, String address, int numberOfStaff, String branch, String linkGoogle, String website, Constant.TypeName type) {
         this.companyName = companyName;
         this.shortName = shortName;
         this.email = email;
@@ -59,6 +61,18 @@ public class Company {
         this.linkGoogle = linkGoogle;
         this.website = website;
         this.type = type;
+    }
+
+    public Company(@NotBlank @Size(min = 3, max = 50) String name,
+                   @NotBlank @Size(min = 3, max = 20) String shortName,
+                   @NotBlank @Size(max = 50) @Email String email,
+                   @NotBlank @Size(min = 6, max = 100) String encode,
+                   @NotBlank String description) {
+        this.companyName = name;
+        this.shortName = shortName;
+        this.email = email;
+        this.password = encode;
+        this.description = description;
     }
 
     public Long getId() {
@@ -173,11 +187,11 @@ public class Company {
         this.website = website;
     }
 
-    public String getType() {
+    public Constant.TypeName getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Constant.TypeName type) {
         this.type = type;
     }
 }
