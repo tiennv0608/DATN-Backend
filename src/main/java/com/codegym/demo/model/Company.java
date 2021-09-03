@@ -62,10 +62,12 @@ public class Company {
     }
 
     public Company(@NotBlank @Size(min = 3, max = 50) String name,
+                   @NotBlank @Size(min = 3, max = 20) String shortName,
                    @NotBlank @Size(max = 50) @Email String email,
                    @NotBlank @Size(min = 6, max = 100) String encode,
                    @NotBlank String description) {
         this.companyName = name;
+        this.shortName = shortName;
         this.email = email;
         this.password = encode;
         this.description = description;

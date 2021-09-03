@@ -3,7 +3,11 @@ package com.codegym.demo.service.company;
 import com.codegym.demo.model.Company;
 import com.codegym.demo.model.User;
 import com.codegym.demo.repository.CompanyRepository;
+import com.codegym.demo.security.userprincipal.CompanyPrinciple;
+import com.codegym.demo.security.userprincipal.UserPrinciple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -41,5 +45,17 @@ public class CompanyService implements ICompanyService {
     @Override
     public Boolean existsByEmail(String email) {
         return companyRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Boolean existsByCompanyName(String companyName) {
+        return companyRepository.existsByCompanyName(companyName);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Company> company = findByEmail(username);
+        if (!company.isPresent()) throw new UsernameNotFoundException(username);
+        return CompanyPrinciple.build(company.get());
     }
 }

@@ -1,7 +1,6 @@
 package com.codegym.demo.security.userprincipal;
 
 import com.codegym.demo.model.Company;
-import com.codegym.demo.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,9 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-public class UserPrinciple implements UserDetails {
+public class CompanyPrinciple implements UserDetails{
     private Long id;
     private String name;
     private String email;
@@ -20,10 +19,10 @@ public class UserPrinciple implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> types;
 
-    public UserPrinciple() {
+    public CompanyPrinciple() {
     }
 
-    public UserPrinciple(Long id, String name, String email, String password, Collection<? extends GrantedAuthority> types) {
+    public CompanyPrinciple(Long id, String name, String email, String password, Collection<? extends GrantedAuthority> types) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -31,15 +30,15 @@ public class UserPrinciple implements UserDetails {
         this.types = types;
     }
 
-    public static UserPrinciple build(User user) {
-        GrantedAuthority authority = new SimpleGrantedAuthority(user.getType());
+    public static CompanyPrinciple build(Company company) {
+        GrantedAuthority authority = new SimpleGrantedAuthority(company.getType());
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(authority);
-        return new UserPrinciple(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPassword(),
+        return new CompanyPrinciple(
+                company.getId(),
+                company.getCompanyName(),
+                company.getEmail(),
+                company.getPassword(),
                 authorities
         );
     }
@@ -57,7 +56,6 @@ public class UserPrinciple implements UserDetails {
         return types;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -79,7 +77,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return false;
     }
 
     @Override

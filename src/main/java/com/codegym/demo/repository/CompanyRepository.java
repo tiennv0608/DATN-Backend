@@ -9,7 +9,10 @@ import java.util.Optional;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
+
     Optional<Company> findByEmail(String email); //Tim kiem email co ton tai trong DB khong?
 
     Boolean existsByEmail(String email); //email da co trong DB chua?
+
+    Boolean existsByCompanyName(String companyName);
 }

@@ -1,5 +1,6 @@
 package com.codegym.demo.security.jwt;
 
+import com.codegym.demo.security.userprincipal.CompanyPrinciple;
 import com.codegym.demo.security.userprincipal.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -10,23 +11,23 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JwtProvider {
-    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
-    private String jwtSecret = "tiennv@gmail.com";
-    private int jwtExpiration = 86400;
+public class CompanyJwtProvider {
+    private static final Logger logger = LoggerFactory.getLogger(CompanyJwtProvider.class);
+    private static final String JWT_SECRET = "tiennv@gmail.com";
+    private static final int JWT_EXPIRATION = 86400;
 
     public String createToken(Authentication authentication) {
-        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        return Jwts.builder().setSubject(userPrinciple.getUsername())
+        CompanyPrinciple companyPrinciple = (CompanyPrinciple) authentication.getPrincipal();
+        return Jwts.builder().setSubject(companyPrinciple.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtExpiration * 1000))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date(new Date().getTime() + JWT_EXPIRATION * 1000))
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature -> Message: {}", e);
@@ -43,7 +44,7 @@ public class JwtProvider {
     }
 
     public String getEmailFromToken(String token) {
-        String email = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        String email = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody().getSubject();
         return email;
     }
 }

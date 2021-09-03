@@ -1,17 +1,28 @@
 package com.codegym.demo.dto.request;
 
-public class LoginForm {
+public class UserRegisterForm {
+    private String name;
     private String email;
     private String password;
+    private String phone;
     private String type;
 
-    public LoginForm() {
+    public UserRegisterForm() {
     }
 
-    public LoginForm(String email, String password, String type) {
+    public UserRegisterForm(String name, String email, String password, String phone) {
+        this.name = name;
         this.email = email;
         this.password = password;
-        this.type = type;
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -30,6 +41,14 @@ public class LoginForm {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getType() {
         return type;
     }
@@ -37,4 +56,5 @@ public class LoginForm {
     public void setType(String type) {
         this.type = type;
     }
+
 }
