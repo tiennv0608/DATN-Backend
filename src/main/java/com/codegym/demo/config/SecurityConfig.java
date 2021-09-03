@@ -1,5 +1,7 @@
 package com.codegym.demo.config;
 
+import com.codegym.demo.security.jwt.JwtAuthenticationFilter;
+import com.codegym.demo.security.jwt.RestAuthenticationEntryPoint;
 import com.codegym.demo.service.company.ICompanyService;
 import com.codegym.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import project.orderfood.security.jwt.JwtAuthenticationFilter;
-import project.orderfood.security.jwt.RestAuthenticationEntryPoint;
-import project.orderfood.service.merchant.IMerchantService;
-import project.orderfood.service.user.IUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -58,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-        auth.userDetailsService(merchantService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(companyService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -67,12 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests().antMatchers(
                 "/",
-                "/auth/login",
-                "/auth/register",
-                "/auth/merchants/login",
-                "/auth/merchants/register",
-                "/home/**",
-                "/food/**"
+                "/auth/**"
         ).permitAll()
                 .anyRequest().authenticated()
                 .and()

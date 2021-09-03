@@ -40,10 +40,12 @@ public class User {
 
     public User(@NotBlank @Size(min = 3, max = 50) String name,
                 @NotBlank @Size(max = 50) @Email String email,
-                @NotBlank @Size(min = 6, max = 100) String encode) {
+                @NotBlank @Size(min = 6, max = 100) String encode,
+                @Pattern(regexp = "^[+84]+[0-9]{9}$") String phone) {
         this.name = name;
         this.email = email;
         this.password = encode;
+        this.phone = phone;
     }
 
     public Long getId() {

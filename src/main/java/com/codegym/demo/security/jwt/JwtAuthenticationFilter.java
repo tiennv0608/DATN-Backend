@@ -1,12 +1,12 @@
 package com.codegym.demo.security.jwt;
 
+import com.codegym.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import project.orderfood.service.user.IUserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

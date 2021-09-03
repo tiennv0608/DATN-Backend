@@ -1,5 +1,7 @@
 package com.codegym.demo.model;
 
+import com.codegym.demo.constant.Constant;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -39,12 +41,12 @@ public class Company {
 
     private String website;
 
-    private String type;
+    private Constant.TypeName type;
 
     public Company() {
     }
 
-    public Company(String companyName, String shortName, String email, String password, String image, String phone, String companyCode, String description, String address, int numberOfStaff, String branch, String linkGoogle, String website, String type) {
+    public Company(String companyName, String shortName, String email, String password, String image, String phone, String companyCode, String description, String address, int numberOfStaff, String branch, String linkGoogle, String website, Constant.TypeName type) {
         this.companyName = companyName;
         this.shortName = shortName;
         this.email = email;
@@ -185,11 +187,11 @@ public class Company {
         this.website = website;
     }
 
-    public String getType() {
+    public Constant.TypeName getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Constant.TypeName type) {
         this.type = type;
     }
 }

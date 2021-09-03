@@ -7,7 +7,7 @@ public enum Response {
     OBJECT_IS_EXISTS("0003", "Object is existed"),
     OBJECT_NOT_FOUND("0004", "Object is not founded"),
     OBJECT_INVALID("0005","Object is invalid"),
-    TAXCODE_IS_EXISTS("0005","Object is invalid"),
+    NAME_IS_EXISTS("0006","Name is invalid"),
     SYSTEM_ERROR("9999", "System errors");
     private String responseCode;
     private String responseMessage;

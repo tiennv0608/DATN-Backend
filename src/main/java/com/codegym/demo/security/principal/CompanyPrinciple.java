@@ -13,25 +13,25 @@ import java.util.Objects;
 
 public class CompanyPrinciple implements UserDetails {
     private Long id;
-    private String username;
+    private String name;
     @JsonIgnore
     private String password;
-    private Collection<? extends GrantedAuthority> channel;
+    private Collection<? extends GrantedAuthority> types;
 
-    public CompanyPrinciple(Long id, String username, String password, Collection<? extends GrantedAuthority> channel) {
+    public CompanyPrinciple(Long id, String name, String password, Collection<? extends GrantedAuthority> types) {
         this.id = id;
-        this.username = username;
+        this.name = name;
         this.password = password;
-        this.channel = channel;
+        this.types = types;
     }
 
     public static CompanyPrinciple build(Company company) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority authority = new SimpleGrantedAuthority(company.getType());
+        GrantedAuthority authority = new SimpleGrantedAuthority(company.getType().name());
         authorities.add(authority);
         return new CompanyPrinciple(
                 company.getId(),
-                company.getEmail(),
+                company.getCompanyName(),
                 company.getPassword(),
                 authorities
         );
@@ -39,7 +39,7 @@ public class CompanyPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return channel;
+        return types;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class CompanyPrinciple implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return name;
     }
 
     @Override

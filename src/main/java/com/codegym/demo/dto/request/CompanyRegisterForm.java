@@ -3,43 +3,56 @@ package com.codegym.demo.dto.request;
 
 import com.codegym.demo.constant.Constant;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class UserRegisterForm {
+public class CompanyRegisterForm {
     @NotBlank
     @Size(min = 3, max = 50)
-    private String name;
+    private String companyName;
+    @NotBlank
+    @Size(min = 3, max = 20)
+    private String shortName;
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
-
     @NotBlank
     @Size(min = 8, max = 100)
     private String password;
-    @Pattern(regexp = "^[+84]+[0-9]{9}$")
-    private String phone;
+    @NotBlank
+    @Lob
+    private String description;
+
     private Constant.TypeName type;
 
-    public UserRegisterForm() {
+    public CompanyRegisterForm() {
     }
 
-    public UserRegisterForm(String name, String email, String password, String phone) {
-        this.name = name;
+    public CompanyRegisterForm(String companyName, String shortName, String email, String password, String description) {
+        this.companyName = companyName;
+        this.shortName = shortName;
         this.email = email;
         this.password = password;
-        this.phone = phone;
+        this.description = description;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getEmail() {
@@ -58,12 +71,12 @@ public class UserRegisterForm {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Constant.TypeName getType() {
