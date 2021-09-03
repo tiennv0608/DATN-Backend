@@ -1,13 +1,13 @@
 package com.codegym.demo.dto.request;
 
-public class UserLoginForm {
+public class MerchantLoginForm {
     private String username;
     private String password;
 
-    public UserLoginForm() {
+    public MerchantLoginForm() {
     }
 
-    public UserLoginForm(String username, String password) {
+    public MerchantLoginForm(String username, String password) {
         this.username = username;
         this.password = password;
     }

@@ -1,7 +1,5 @@
 package com.codegym.demo.config;
 
-import com.codegym.demo.security.jwt.CompanyJwtTokenFilter;
-import com.codegym.demo.security.jwt.UserJwtTokenFilter;
 import com.codegym.demo.service.company.ICompanyService;
 import com.codegym.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +15,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import project.orderfood.security.jwt.JwtAuthenticationFilter;
+import project.orderfood.security.jwt.RestAuthenticationEntryPoint;
+import project.orderfood.service.merchant.IMerchantService;
+import project.orderfood.service.user.IUserService;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Autowired
-//    private JwtEntryPoint jwtEntryPoint;
-
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private IUserService userService;
 
@@ -31,29 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private ICompanyService companyService;
 
     @Bean
-    public UserJwtTokenFilter jwtTokenFilter() {
-        return new UserJwtTokenFilter();
-    }
-
-    @Bean
-    public CompanyJwtTokenFilter companyJwtTokenFilter() {
-        return new CompanyJwtTokenFilter();
-    }
-
-    @Bean
-    public CustomAccessDeniedHandler customAccessDeniedHandler() {
-        return new CustomAccessDeniedHandler();
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
-        authenticationManagerBuilder.userDetailsService(companyService).passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -62,14 +40,43 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+    @Bean
+    public RestAuthenticationEntryPoint restServicesEntryPoint() {
+        return new RestAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
+
+    @Autowired
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(merchantService).passwordEncoder(passwordEncoder());
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/","/**").permitAll()
+                .authorizeRequests().antMatchers(
+                "/",
+                "/auth/login",
+                "/auth/register",
+                "/auth/merchants/login",
+                "/auth/merchants/register",
+                "/home/**",
+                "/food/**"
+        ).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(companyJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 }

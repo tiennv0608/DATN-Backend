@@ -1,15 +1,12 @@
 package com.codegym.demo.security.jwt;
 
-import com.codegym.demo.service.company.ICompanyService;
-import com.codegym.demo.service.user.IUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import project.orderfood.service.user.IUserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,37 +14,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UserJwtTokenFilter extends OncePerRequestFilter {
-    private static final Logger logger = LoggerFactory.getLogger(UserJwtTokenFilter.class);
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private UserJwtProvider userJwtProvider;
+    private UserJwtService jwtService;
+
     @Autowired
     private IUserService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         try {
-            String token = getJwt(request);
-            if (token != null && userJwtProvider.validateToken(token)) {
-                UsernamePasswordAuthenticationToken authentication;
-                String email = userJwtProvider.getEmailFromToken(token);
-                UserDetails userDetails = userService.loadUserByUsername(email);
-                authentication = new UsernamePasswordAuthenticationToken(
+            String jwt = getJwtFromRequest(request);
+            if (jwt != null && jwtService.validateJwtToken(jwt)) {
+                String username = jwtService.getUserNameFromJwtToken(jwt);
+
+                UserDetails userDetails = userService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
             logger.error("Can NOT set user authentication -> Message: {}", e);
         }
+
         filterChain.doFilter(request, response);
     }
 
-    private String getJwt(HttpServletRequest request) {
+    private String getJwtFromRequest(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.replace("Bearer ", "");
         }
+
         return null;
     }
 }

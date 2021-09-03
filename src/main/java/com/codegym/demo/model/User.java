@@ -1,5 +1,7 @@
 package com.codegym.demo.model;
 
+import com.codegym.demo.constant.Constant;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,12 +25,12 @@ public class User {
 
     private String phone;
 
-    private String type;
+    private Constant.TypeName type;
 
     public User() {
     }
 
-    public User(String name, String email, String password, String phone, String type) {
+    public User(String name, String email, String password, String phone, Constant.TypeName type) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -84,11 +86,11 @@ public class User {
         this.phone = phone;
     }
 
-    public String getType() {
+    public Constant.TypeName getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Constant.TypeName type) {
         this.type = type;
     }
 }

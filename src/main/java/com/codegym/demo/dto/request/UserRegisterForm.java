@@ -1,28 +1,57 @@
 package com.codegym.demo.dto.request;
 
+
+import com.codegym.demo.constant.Constant;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class UserRegisterForm {
-    private String name;
+    @NotBlank
+    @Size(min = 6, max = 50)
+    @Pattern(regexp = "^[a-z]{1}[a-z0-9._-]{5,15}$")
+    private String username;
+
+    @Pattern(regexp = "^[+84]+[0-9]{9}$")
+    private String phoneNumber;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 8, max = 100)
     private String password;
-    private String phone;
-    private String type;
+    private Constant.TypeName type;
 
     public UserRegisterForm() {
     }
 
-    public UserRegisterForm(String name, String email, String password, String phone) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
+    public Constant.TypeName getType() {
+        return type;
     }
 
-    public String getName() {
-        return name;
+    public void setChannel(Constant.TypeName channel) {
+        this.type = channel;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
@@ -39,22 +68,6 @@ public class UserRegisterForm {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
 }
