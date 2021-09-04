@@ -64,8 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .csrf().disable()
                 .authorizeRequests().antMatchers(
-                "/",
-                "/auth/**"
+                "/**"
         ).permitAll()
                 .anyRequest().authenticated()
                 .and()
