@@ -57,7 +57,7 @@ public class AuthController {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
             }
-            if (userService.existsByEmail(registerForm.getEmail())) {
+            if (companyService.existsByEmail(registerForm.getEmail()) || userService.existsByEmail(registerForm.getEmail())) {
                 return new ResponseEntity<>(new ResponseBody(Response.EMAIL_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
             User user = new User(registerForm.getName(), registerForm.getEmail(), registerForm.getPassword(), registerForm.getPhone());
@@ -93,9 +93,10 @@ public class AuthController {
             if (companyService.existsByCompanyName(registerForm.getCompanyName())) {
                 return new ResponseEntity<>(new ResponseBody(Response.NAME_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
-            if (companyService.existsByEmail(registerForm.getEmail())) {
+            if (companyService.existsByEmail(registerForm.getEmail()) || userService.existsByEmail(registerForm.getEmail())) {
                 return new ResponseEntity<>(new ResponseBody(Response.EMAIL_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
+
             String encode = passwordEncoder.encode(registerForm.getPassword());
             Company company = new Company(
                     registerForm.getCompanyName(),
