@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -17,8 +18,11 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("/list")
-    public ResponseEntity<Iterable<User>> getAll() {
-        Iterable<User> userIterable = userService.findAll();
+    public ResponseEntity<Iterable<User>> findAll() {
+        List<User> userIterable = (List<User>) userService.findAll();
+        if (userIterable.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(userIterable, HttpStatus.OK);
     }
 
@@ -58,5 +62,4 @@ public class UserController {
         userService.remove(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

@@ -51,6 +51,7 @@ public class UserService implements IUserService {
         return userRepository.existsByEmail(email);
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = findByEmail(username);
