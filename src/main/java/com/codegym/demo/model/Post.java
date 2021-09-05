@@ -36,13 +36,13 @@ public class Post {
     private Gender gender;
 
     private String code;
-
+    private Boolean status;
     @ManyToOne
     private Company company;
     public Post() {
     }
 
-    public Post(String title, Category category, double salary, String address, String position, String exp, WorkForm workForm, Date expiredDate, String description, int quantity, Gender gender, String code, Company company) {
+    public Post(String title, Category category, double salary, String address, String position, String exp, WorkForm workForm, Date expiredDate, String description, int quantity, Gender gender, String code, Boolean status, Company company) {
         this.title = title;
         this.category = category;
         this.salary = salary;
@@ -55,7 +55,16 @@ public class Post {
         this.quantity = quantity;
         this.gender = gender;
         this.code = code;
+        this.status = status;
         this.company = company;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Long getId() {
