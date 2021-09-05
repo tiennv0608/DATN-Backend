@@ -37,6 +37,7 @@ public class CompanyController {
         }
         company.setId(id);
         company.setEmail(companyOptional.get().getEmail());
+        company.setCompanyCode(companyOptional.get().getCompanyCode());
         company.setType(companyOptional.get().getType());
         if (company.getCompanyName() == null || company.getCompanyName().trim().equals("")) {
             company.setCompanyName(companyOptional.get().getCompanyName());
@@ -44,9 +45,7 @@ public class CompanyController {
         if (company.getShortName() == null || company.getShortName().trim().equals("")) {
             company.setShortName(companyOptional.get().getShortName());
         }
-        if (company.getCompanyCode() == null || company.getCompanyCode().trim().equals("")) {
-            company.setCompanyName(companyOptional.get().getCompanyCode());
-        }
+
         if (company.getAddress() == null || company.getAddress().trim().equals("")) {
             company.setAddress(companyOptional.get().getAddress());
         }
