@@ -1,16 +1,15 @@
 package com.codegym.demo.controller;
 
+import com.codegym.demo.model.Gender;
 import com.codegym.demo.model.WorkForm;
 import com.codegym.demo.service.workform.IWorkFormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/work-forms")
@@ -26,5 +25,14 @@ public class WorkFormController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(workForms, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<WorkForm> findById(@PathVariable Long id) {
+        Optional<WorkForm> workForm = workFormService.findById(id);
+        if (!workForm.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(workForm.get(), HttpStatus.OK);
     }
 }
