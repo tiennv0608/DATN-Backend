@@ -2,6 +2,7 @@ package com.codegym.demo.service.user;
 
 import com.codegym.demo.model.User;
 import com.codegym.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.codegym.demo.security.principal.UserPrinciple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +14,8 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
-
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -50,6 +50,7 @@ public class UserService implements IUserService {
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
