@@ -1,6 +1,7 @@
 package com.codegym.demo.controller;
 
 import com.codegym.demo.model.Company;
+import com.codegym.demo.model.Post;
 import com.codegym.demo.service.company.ICompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,15 @@ public class CompanyController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Company> findById(@PathVariable Long id) {
+        Optional<Company> companyOptional = companyService.findById(id);
+        if (!companyOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(companyOptional.get(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
