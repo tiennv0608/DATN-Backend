@@ -3,7 +3,6 @@ package com.codegym.demo.controller;
 import com.codegym.demo.model.User;
 import com.codegym.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

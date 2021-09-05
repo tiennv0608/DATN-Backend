@@ -1,59 +1,37 @@
-package com.codegym.demo.model;
+package com.codegym.demo.dto.request;
+
 
 import com.codegym.demo.constant.Constant;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class UserRegisterForm {
     @NotBlank
+    @Size(min = 3, max = 50)
     private String name;
+    @NotBlank
+    @Size(max = 50)
     @Email
     private String email;
+
     @NotBlank
+    @Size(min = 8, max = 100)
     private String password;
-
+    @Pattern(regexp = "^[+84]+[0-9]{9}$")
     private String phone;
-
     private Constant.TypeName type;
 
-    public User() {
+    public UserRegisterForm() {
     }
 
-    public User(String name, String email, String password, String phone, Constant.TypeName type) {
+    public UserRegisterForm(String name, String email, String password, String phone) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.type = type;
-    }
-
-    public User(@NotBlank @Size(min = 3, max = 50) String name,
-                @NotBlank @Size(max = 50) @Email String email,
-                @NotBlank @Size(min = 6, max = 100) String encode,
-                @Pattern(regexp = "^[+84]+[0-9]{9}$") String phone) {
-        this.name = name;
-        this.email = email;
-        this.password = encode;
-        this.phone = phone;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
