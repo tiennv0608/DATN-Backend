@@ -1,6 +1,5 @@
 package com.codegym.demo.controller;
 
-import com.codegym.demo.model.Category;
 import com.codegym.demo.model.Company;
 import com.codegym.demo.model.Post;
 import com.codegym.demo.service.category.ICategoryService;
@@ -37,6 +36,7 @@ public class PostController {
     public ResponseEntity<Void> create(@RequestBody Post post) {
         Company company = iCompanyService.findById(post.getCompany().getId()).get();
         post.setCode("CODE"+company.getCompanyCode()+post.getCategory().getId());
+        post.setStatus(true);
         iPostService.save(post);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
