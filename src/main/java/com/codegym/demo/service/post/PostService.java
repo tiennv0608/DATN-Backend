@@ -29,4 +29,9 @@ public class PostService implements IPostService{
     public void remove(Long id) {
         postRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Post> findAllByIdCompany(Long id) {
+        return postRepository.findAllByIdCompany(id);
+    }
 }

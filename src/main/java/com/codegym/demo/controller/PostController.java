@@ -9,6 +9,7 @@ import com.codegym.demo.service.post.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseBody> create(@Validated @RequestBody Post post, BindingResult bindingResult) {
+    public ResponseEntity<ResponseBody> create(@Validated @RequestBody Post post) {
         try {
             if (post.getQuantity()==0){
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
@@ -62,6 +63,15 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(postOptional.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/companies/{idCompany}")
+    public ResponseEntity<Iterable<Post>> findAllByCompany(@PathVariable Long idCompany){
+        List<Post> posts = (List<Post>) iPostService.findAllByIdCompany(idCompany);
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
