@@ -86,7 +86,7 @@ public class PostController {
         }
         return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
     }
-    @PutMapping("/status/{id}")
+    @GetMapping("/status/{id}")
     public ResponseEntity<ResponseBody> editStatus(@PathVariable Long id) {
         Optional<Post> postOptional = iPostService.findById(id);
 
