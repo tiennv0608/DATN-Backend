@@ -29,4 +29,24 @@ public class PostService implements IPostService{
     public void remove(Long id) {
         postRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Post> findAllByPositionContaining(String position) {
+        return postRepository.findAllByPositionContaining(position);
+    }
+
+    @Override
+    public Iterable<Post> findAllByTitleContaining(String title) {
+        return postRepository.findAllByTitleContaining(title);
+    }
+
+    @Override
+    public Iterable<Post> findAllByAddressContaining(String address) {
+        return postRepository.findAllByAddressContaining(address);
+    }
+
+    @Override
+    public Iterable<Post> findAllBySalaryContaining(double salary) {
+        return postRepository.findAllBySalaryIsGreaterThan(salary);
+    }
 }
