@@ -105,6 +105,7 @@ public class AuthController {
                     encode,
                     registerForm.getDescription());
             company.setType(Constant.TypeName.COMPANY);
+            company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
             companyService.save(company);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
             company.setCompanyCode(companyCode);
