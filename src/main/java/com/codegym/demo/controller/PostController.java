@@ -9,8 +9,6 @@ import com.codegym.demo.service.post.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,7 +86,24 @@ public class PostController {
         }
         return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
     }
+    @PutMapping("/status/{id}")
+    public ResponseEntity<ResponseBody> editStatus(@PathVariable Long id) {
+        Optional<Post> postOptional = iPostService.findById(id);
 
+        if (!postOptional.isPresent()) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (postOptional.get().getQuantity()==0){
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (postOptional.get().getStatus()==true){
+            postOptional.get().setStatus(false);
+        }else {
+            postOptional.get().setStatus(true);
+        }
+        Post post = postOptional.get();
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> delete(@PathVariable Long id) {
         Optional<Post> productOptional = iPostService.findById(id);
