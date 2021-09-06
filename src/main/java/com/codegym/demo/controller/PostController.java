@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +70,13 @@ public class PostController {
         }
         iPostService.remove(id);
         return new ResponseEntity<>(productOptional.get(), HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<Post>> findAllByAddressAndDescription( String address,  String description){
+        List<Post> postList= (List<Post>) iPostService.findAllByAddressAndDescription(address, description);
+        if(postList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 }

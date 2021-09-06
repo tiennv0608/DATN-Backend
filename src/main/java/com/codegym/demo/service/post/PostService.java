@@ -22,11 +22,32 @@ public class PostService implements IPostService{
 
     @Override
     public Post save(Post post) {
-        return postRepository.save(post);
+        return (Post) postRepository.save(post);
     }
 
     @Override
     public void remove(Long id) {
         postRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Post> findByAddressContaining(String address) {
+        return postRepository.findByAddressContaining(address);
+    }
+
+    @Override
+    public Iterable<Post> search(String address, String description) {
+        return postRepository.search(address, description);
+    }
+
+    @Override
+    public Iterable<Post> findTop2New() {
+        return postRepository.findTop2New();
+    }
+
+    @Override
+    public Iterable<Post> findAllByAddressAndDescription(String address, String description) {
+        return postRepository.findAllByAddressAndDescription(address,description);
+    }
+
 }
