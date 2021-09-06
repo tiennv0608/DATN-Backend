@@ -57,6 +57,7 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
         Optional<Post> postOptional = iPostService.findById(id);
+
         if (!postOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -64,14 +65,18 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editPost(@PathVariable Long id, @RequestBody Post post) {
+    public ResponseEntity<ResponseBody> editPost(@PathVariable Long id, @RequestBody Post post) {
         Optional<Post> postOptional = iPostService.findById(id);
-        if (!postOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        post.setCode(postOptional.get().getCode());
+        post.setStatus(postOptional.get().getStatus());
         post.setId(id);
-        iPostService.save(post);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (!postOptional.isPresent()) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (post.getQuantity()==0){
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
