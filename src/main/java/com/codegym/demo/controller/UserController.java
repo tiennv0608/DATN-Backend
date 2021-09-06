@@ -1,15 +1,17 @@
 package com.codegym.demo.controller;
 
+import com.codegym.demo.dto.response.PostResponse;
 import com.codegym.demo.model.Company;
 import com.codegym.demo.model.User;
+import com.codegym.demo.service.post.IPostService;
 import com.codegym.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +21,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     IUserService userService;
+
+    @Autowired
+    private IPostService postService;
 
     @GetMapping
     public ResponseEntity<Iterable<User>> findAll() {

@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
+@Table
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,13 +16,14 @@ public class Post {
     @ManyToOne
     private Category category;
 
-    private double salary;
+    @ManyToOne
+    private Salary salary;
 
     private String address;
 
     private String position;
-
-    private String exp;
+    @ManyToOne
+    private Exp exp;
 
     @ManyToOne
     private WorkForm workForm;
@@ -39,10 +41,13 @@ public class Post {
 
     @ManyToOne
     private Company company;
+
+    @ManyToOne
+    private City city;
     public Post() {
     }
 
-    public Post(String title, Category category, double salary, String address, String position, String exp, WorkForm workForm, Date expiredDate, String description, int quantity, Gender gender, String code, Company company) {
+    public Post(String title, Category category, Salary salary, String address, String position, Exp exp, WorkForm workForm, Date expiredDate, String description, int quantity, Gender gender, String code, Company company, City city) {
         this.title = title;
         this.category = category;
         this.salary = salary;
@@ -56,6 +61,7 @@ public class Post {
         this.gender = gender;
         this.code = code;
         this.company = company;
+        this.city = city;
     }
 
     public Long getId() {
@@ -82,14 +88,6 @@ public class Post {
         this.category = category;
     }
 
-    public double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -104,14 +102,6 @@ public class Post {
 
     public void setPosition(String position) {
         this.position = position;
-    }
-
-    public String getExp() {
-        return exp;
-    }
-
-    public void setExp(String exp) {
-        this.exp = exp;
     }
 
     public WorkForm getWorkForm() {
@@ -168,5 +158,29 @@ public class Post {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public Salary getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Salary salary) {
+        this.salary = salary;
+    }
+
+    public Exp getExp() {
+        return exp;
+    }
+
+    public void setExp(Exp exp) {
+        this.exp = exp;
     }
 }
