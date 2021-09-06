@@ -1,5 +1,6 @@
 package com.codegym.demo.controller;
 
+import com.codegym.demo.dto.response.Response;
 import com.codegym.demo.model.Company;
 import com.codegym.demo.model.Post;
 import com.codegym.demo.service.category.ICategoryService;
@@ -8,7 +9,11 @@ import com.codegym.demo.service.post.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import com.codegym.demo.dto.response.ResponseBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,12 +38,20 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Post post) {
-        Company company = iCompanyService.findById(post.getCompany().getId()).get();
-        post.setCode("CODE"+company.getCompanyCode()+post.getCategory().getId());
-        post.setStatus(true);
-        iPostService.save(post);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<ResponseBody> create(@Validated @RequestBody Post post, BindingResult bindingResult) {
+        try {
+            if (post.getQuantity()==0){
+                return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+            }
+            Company company = iCompanyService.findById(post.getCompany().getId()).get();
+            post.setCode("CODE"+company.getCompanyCode()+post.getCategory().getId());
+            post.setStatus(true);
+            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
     }
 
     @GetMapping("/{id}")
