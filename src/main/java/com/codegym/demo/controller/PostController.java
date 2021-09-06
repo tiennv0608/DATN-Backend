@@ -28,6 +28,7 @@ public class PostController {
     private ICompanyService iCompanyService;
     @Autowired
     private ICategoryService iCategoryService;
+
     @GetMapping
     public ResponseEntity<Iterable<Post>> findAll() {
         List<Post> posts = (List<Post>) iPostService.findAll();
@@ -40,14 +41,14 @@ public class PostController {
     @PostMapping
     public ResponseEntity<ResponseBody> create(@Validated @RequestBody Post post, BindingResult bindingResult) {
         try {
-            if (post.getQuantity()==0){
+            if (post.getQuantity() == 0) {
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
             }
             Company company = iCompanyService.findById(post.getCompany().getId()).get();
-            post.setCode("CODE"+company.getCompanyCode()+post.getCategory().getId());
+            post.setCode("CODE" + company.getCompanyCode() + post.getCategory().getId());
             post.setStatus(true);
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -83,44 +84,49 @@ public class PostController {
         iPostService.remove(id);
         return new ResponseEntity<>(productOptional.get(), HttpStatus.NO_CONTENT);
     }
+
     @GetMapping("/position")
-    public ResponseEntity<Iterable<Post>> findAllByPositionContaining(String position){
+    public ResponseEntity<Iterable<Post>> findAllByPositionContaining(String position) {
         List<Post> postList = (List<Post>) iPostService.findAllByPositionContaining(position);
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
+
     @GetMapping("/title")
-    public ResponseEntity<Iterable<Post>> findAllByTitleContaining(String title){
+    public ResponseEntity<Iterable<Post>> findAllByTitleContaining(String title) {
         List<Post> postList = (List<Post>) iPostService.findAllByTitleContaining(title);
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
+
     @GetMapping("/address")
-    public ResponseEntity<Iterable<Post>> findAllByAddressContaining(String address){
+    public ResponseEntity<Iterable<Post>> findAllByAddressContaining(String address) {
         List<Post> postList = (List<Post>) iPostService.findAllByAddressContaining(address);
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
+
     @GetMapping("/salary")
-    public ResponseEntity<Iterable<Post>> findAllBySalaryBetween(String salary){
+    public ResponseEntity<Iterable<Post>> findAllBySalaryBetween(String salary) {
         List<Post> postList = (List<Post>) iPostService.findAllBySalaryContaining(Double.parseDouble(salary));
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<Iterable<Post>> searchAdvanced(String title,String salary, String exp, String address){
-        List<Post> postList = (List<Post>) iPostService.searchAdvanced(title,Double.parseDouble(salary),exp,address);
-        if(postList.isEmpty()){
+    public ResponseEntity<Iterable<Post>> searchAdvanced(String title, Integer salary, String address) {
+        List<Post> postList = (List<Post>) iPostService.searchAdvanced(title, salary, address);
+        if (postList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(postList,HttpStatus.OK);
+        return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 }

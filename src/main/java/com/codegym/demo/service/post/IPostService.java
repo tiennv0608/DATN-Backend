@@ -8,5 +8,5 @@ public interface IPostService extends IGeneralService<Post> {
     Iterable<Post>findAllByTitleContaining(String title);
     Iterable<Post>findAllByAddressContaining(String address);
     Iterable<Post>findAllBySalaryContaining(double salary);
-    Iterable<Post>searchAdvanced(String title, double salary, String exp, String address);
+    Iterable<Post>searchAdvanced(String title, Integer salary, String address);
 }
