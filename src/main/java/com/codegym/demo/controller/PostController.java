@@ -167,7 +167,7 @@ public class PostController {
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/find")
     public ResponseEntity<Iterable<Post>> searchAdvanced(String title, Integer salary, String exp, String address) {
         if (salary == null) {
             salary = 0;
