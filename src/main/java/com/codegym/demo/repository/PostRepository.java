@@ -1,5 +1,6 @@
 package com.codegym.demo.repository;
 
+import com.codegym.demo.model.Company;
 import com.codegym.demo.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,8 +14,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Iterable<Post> findAllByIdCompany(@Param("id_company") Long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM post\n" +
-            "group by company_id\n" +
-            "having SUM(quantity)\n" +
+            "GROUP BY company_id\n" +
+            "HAVING SUM(quantity)\n" +
             "ORDER BY SUM(quantity) desc limit 5")
-    Iterable<Post> findAllByTop5Company();
+    Iterable<Post> findTop5Company();
 }

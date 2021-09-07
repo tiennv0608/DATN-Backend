@@ -70,9 +70,9 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
-    @GetMapping("/get-top-5")
-    public ResponseEntity<Iterable<Post>> findCompanyByTop5() {
-        List<Post> posts = (List<Post>) iPostService.findAllByTop5Company();
+    @GetMapping("/get-top-5-companies")
+    public ResponseEntity<Iterable<Post>> findTop5Company() {
+        List<Post> posts = (List<Post>) iPostService.findTop5Company();
         if (posts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
