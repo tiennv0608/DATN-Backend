@@ -127,8 +127,50 @@ public class PostController {
         iPostService.remove(id);
         return new ResponseEntity<>(productOptional.get(), HttpStatus.NO_CONTENT);
     }
-    @Autowired
-    private IPostService postService;
+
+    @GetMapping("/position")
+    public ResponseEntity<Iterable<Post>> findAllByPositionContaining(String position){
+        List<Post> postList = (List<Post>) iPostService.findAllByPositionContaining(position);
+        if(postList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+    @GetMapping("/title")
+    public ResponseEntity<Iterable<Post>> findAllByTitleContaining(String title){
+        List<Post> postList = (List<Post>) iPostService.findAllByTitleContaining(title);
+        if(postList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+    @GetMapping("/address")
+    public ResponseEntity<Iterable<Post>> findAllByAddressContaining(String address){
+        List<Post> postList = (List<Post>) iPostService.findAllByAddressContaining(address);
+        if(postList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+    @GetMapping("/salary")
+    public ResponseEntity<Iterable<Post>> findAllBySalaryBetween(String salary){
+        List<Post> postList = (List<Post>) iPostService.findAllBySalaryContaining(Double.parseDouble(salary));
+        if(postList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<Post>> searchAdvanced(String title, Integer salary,String exp, String address) {
+        if(salary == null){
+            salary = 0;
+        }
+        List<Post> postList = (List<Post>) iPostService.searchAdvanced(title, salary,exp, address);
+        if (postList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postList, HttpStatus.OK);
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     private ResponseEntity<?> findJob(@RequestParam(name = "keyword") String keyword, @RequestParam(name = "cat_id") Long cat_id, @RequestParam(name = "city_id") Long city_id,@RequestParam(name = "salary1") double salary1,@RequestParam(name = "salary2") double salary2){
