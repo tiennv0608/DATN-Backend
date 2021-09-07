@@ -1,5 +1,6 @@
 package com.codegym.demo.service.post;
 
+import com.codegym.demo.model.Company;
 import com.codegym.demo.model.Post;
 import com.codegym.demo.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,10 @@ public class PostService implements IPostService{
     @Override
     public Iterable<Post> findAllByIdCompany(Long id) {
         return postRepository.findAllByIdCompany(id);
+    }
+
+    @Override
+    public Iterable<Post> findTop5Company() {
+        return postRepository.findTop5Company();
     }
 }

@@ -49,8 +49,6 @@ public class PostController {
         }catch (Exception e){
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
     }
 
     @GetMapping("/{id}")
@@ -66,6 +64,15 @@ public class PostController {
     @GetMapping("/companies/{idCompany}")
     public ResponseEntity<Iterable<Post>> findAllByCompany(@PathVariable Long idCompany){
         List<Post> posts = (List<Post>) iPostService.findAllByIdCompany(idCompany);
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-top-5-companies")
+    public ResponseEntity<Iterable<Post>> findTop5Company() {
+        List<Post> posts = (List<Post>) iPostService.findTop5Company();
         if (posts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
