@@ -34,4 +34,31 @@ public class PostService implements IPostService{
     public Iterable<Post> findAllByIdCompany(Long id) {
         return postRepository.findAllByIdCompany(id);
     }
+
+    @Override
+    public Iterable<Post> findAllByPositionContaining(String position) {
+        return postRepository.findAllByPositionContaining(position);
+    }
+
+    @Override
+    public Iterable<Post> findAllByTitleContaining(String title) {
+        return postRepository.findAllByTitleContaining(title);
+    }
+
+    @Override
+    public Iterable<Post> findAllByAddressContaining(String address) {
+        return postRepository.findAllByAddressContaining(address);
+    }
+
+    @Override
+    public Iterable<Post> findAllBySalaryContaining(double salary) {
+        return postRepository.findAllBySalaryIsGreaterThan(salary);
+    }
+
+    @Override
+    public Iterable<Post> searchAdvanced(String title, Integer salary,String exp, String address) {
+        return postRepository.searchAdvanced(title, salary,exp,address);
+    }
+
+
 }
