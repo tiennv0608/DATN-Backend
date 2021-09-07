@@ -39,7 +39,8 @@ public class Post {
     private Boolean status;
     @ManyToOne
     private Company company;
-    @OneToOne
+
+    @ManyToOne
     private City city;
     public Post() {
     }

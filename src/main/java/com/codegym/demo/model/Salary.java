@@ -6,20 +6,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class City {
+public class Salary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    public City() {
+    public Salary() {
     }
 
-    public City(String name) {
-        this.name = name;
-    }
-
-    public City(Long id, String name) {
+    public Salary(Long id, String name) {
         this.id = id;
         this.name = name;
     }
