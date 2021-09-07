@@ -167,7 +167,7 @@ public class PostController {
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/find")
     public ResponseEntity<Iterable<Post>> searchAdvanced(String title, Integer salary, String exp, String address) {
         if (salary == null) {
             salary = 0;
@@ -179,7 +179,7 @@ public class PostController {
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
     private ResponseEntity<?> findJob(@RequestParam(name = "keyword") String keyword, @RequestParam(name = "cat_id") Long cat_id, @RequestParam(name = "city_id") Long city_id, @RequestParam(name = "salary1") double salary1, @RequestParam(name = "salary2") double salary2) {
         List<Post> posts;
         posts = iPostService.searchJob(keyword, cat_id, city_id, salary1, salary2);
