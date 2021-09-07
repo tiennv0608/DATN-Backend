@@ -5,4 +5,6 @@ import com.codegym.demo.service.IGeneralService;
 
 public interface IPostService extends IGeneralService<Post> {
     Iterable<Post> findAllByIdCompany(Long id);
+
+    Iterable<Post> findAllByTop5Company();
 }

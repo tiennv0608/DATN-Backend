@@ -34,4 +34,9 @@ public class PostService implements IPostService{
     public Iterable<Post> findAllByIdCompany(Long id) {
         return postRepository.findAllByIdCompany(id);
     }
+
+    @Override
+    public Iterable<Post> findAllByTop5Company() {
+        return postRepository.findAllByTop5Company();
+    }
 }

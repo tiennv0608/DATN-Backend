@@ -9,6 +9,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query(nativeQuery = true,value = "SELECT * FROM post p WHERE p.company_id =:id_company")
+    @Query(nativeQuery = true, value = "SELECT * FROM post p WHERE p.company_id =:id_company")
     Iterable<Post> findAllByIdCompany(@Param("id_company") Long id);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM post\n" +
+            "group by company_id\n" +
+            "having SUM(quantity)\n" +
+            "ORDER BY SUM(quantity) desc limit 5")
+    Iterable<Post> findAllByTop5Company();
 }
