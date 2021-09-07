@@ -51,8 +51,9 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public Iterable<Post> searchAdvanced(String title, double salary, String exp, String address) {
-        return postRepository.searchAdvanced(title, salary, exp,address);
+    public Iterable<Post> searchAdvanced(String title, Integer salary,String exp, String address) {
+        return postRepository.searchAdvanced(title, salary,exp,address);
     }
+
 
 }

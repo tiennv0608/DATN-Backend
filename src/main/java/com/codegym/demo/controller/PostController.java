@@ -115,12 +115,16 @@ public class PostController {
         }
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<Iterable<Post>> searchAdvanced(String title,String salary, String exp, String address){
-        List<Post> postList = (List<Post>) iPostService.searchAdvanced(title,Double.parseDouble(salary),exp,address);
-        if(postList.isEmpty()){
+    public ResponseEntity<Iterable<Post>> searchAdvanced(String title, Integer salary,String exp, String address) {
+        if(salary == null){
+            salary = 0;
+        }
+        List<Post> postList = (List<Post>) iPostService.searchAdvanced(title, salary,exp, address);
+        if (postList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(postList,HttpStatus.OK);
+        return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 }
