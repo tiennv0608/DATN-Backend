@@ -9,7 +9,6 @@ import com.codegym.demo.service.post.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +37,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseBody> create(@Validated @RequestBody Post post, BindingResult bindingResult) {
+    public ResponseEntity<ResponseBody> create(@Validated @RequestBody Post post) {
         try {
             if (post.getQuantity()==0){
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
@@ -57,23 +56,54 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
         Optional<Post> postOptional = iPostService.findById(id);
+
         if (!postOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(postOptional.get(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> editPost(@PathVariable Long id, @RequestBody Post post) {
-        Optional<Post> postOptional = iPostService.findById(id);
-        if (!postOptional.isPresent()) {
+    @GetMapping("/companies/{idCompany}")
+    public ResponseEntity<Iterable<Post>> findAllByCompany(@PathVariable Long idCompany){
+        List<Post> posts = (List<Post>) iPostService.findAllByIdCompany(idCompany);
+        if (posts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        post.setId(id);
-        iPostService.save(post);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseBody> editPost(@PathVariable Long id, @RequestBody Post post) {
+        Optional<Post> postOptional = iPostService.findById(id);
+        post.setCode(postOptional.get().getCode());
+        post.setStatus(postOptional.get().getStatus());
+        post.setId(id);
+        if (!postOptional.isPresent()) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (post.getQuantity()==0){
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
+    }
+    @GetMapping("/status/{id}")
+    public ResponseEntity<ResponseBody> editStatus(@PathVariable Long id) {
+        Optional<Post> postOptional = iPostService.findById(id);
+
+        if (!postOptional.isPresent()) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (postOptional.get().getQuantity()==0){
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (postOptional.get().getStatus()==true){
+            postOptional.get().setStatus(false);
+        }else {
+            postOptional.get().setStatus(true);
+        }
+        Post post = postOptional.get();
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> delete(@PathVariable Long id) {
         Optional<Post> productOptional = iPostService.findById(id);

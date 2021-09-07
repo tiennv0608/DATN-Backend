@@ -31,6 +31,11 @@ public class PostService implements IPostService{
     }
 
     @Override
+    public Iterable<Post> findAllByIdCompany(Long id) {
+        return postRepository.findAllByIdCompany(id);
+    }
+
+    @Override
     public Iterable<Post> findAllByPositionContaining(String position) {
         return postRepository.findAllByPositionContaining(position);
     }

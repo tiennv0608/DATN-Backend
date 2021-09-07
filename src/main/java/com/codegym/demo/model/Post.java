@@ -39,10 +39,12 @@ public class Post {
     private Boolean status;
     @ManyToOne
     private Company company;
+    @OneToOne
+    private City city;
     public Post() {
     }
 
-    public Post(String title, Category category, double salary, String address, String position, String exp, WorkForm workForm, Date expiredDate, String description, int quantity, Gender gender, String code, Boolean status, Company company) {
+    public Post(String title, Category category, double salary, String address, String position, String exp, WorkForm workForm, Date expiredDate, String description, int quantity, Gender gender, String code, Boolean status, Company company, City city) {
         this.title = title;
         this.category = category;
         this.salary = salary;
@@ -57,6 +59,15 @@ public class Post {
         this.code = code;
         this.status = status;
         this.company = company;
+        this.city = city;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public Boolean getStatus() {
