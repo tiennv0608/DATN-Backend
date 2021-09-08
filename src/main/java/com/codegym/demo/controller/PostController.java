@@ -192,4 +192,15 @@ public class PostController {
         List<Post> postList = (List<Post>) iPostService.findAll();
         return new ResponseEntity<>(postList.size(), HttpStatus.OK);
     }
+    @GetMapping("/company-category/{cat_id}")
+    public ResponseEntity<?> findAllByCategory(@PathVariable Long cat_id){
+        System.out.println("wtf");
+        System.out.println(cat_id);
+        List<Post> posts = iPostService.findByCategory(cat_id);
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
 }
