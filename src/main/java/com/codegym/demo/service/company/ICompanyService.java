@@ -15,4 +15,6 @@ public interface ICompanyService extends IGeneralService<Company>, UserDetailsSe
     Boolean existsByCompanyName(String companyName); // ten cong ty da co trong DB chua
 
     Company changeInfo(Long id, Company company);
+
+    Boolean verify(String verificationCode);
 }
