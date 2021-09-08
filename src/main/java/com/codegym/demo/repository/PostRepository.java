@@ -28,4 +28,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "HAVING SUM(quantity)\n" +
             "ORDER BY SUM(quantity) desc limit 5")
     Iterable<Post> findTop5Company();
+    List<Post> findAllByCategoryId(Long cat_id);
 }

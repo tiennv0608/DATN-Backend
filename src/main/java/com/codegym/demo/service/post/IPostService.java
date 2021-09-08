@@ -16,4 +16,5 @@ public interface IPostService extends IGeneralService<Post> {
     Page<PostResponse> findAllPage(Pageable pageable);
 
     Iterable<Post> findTop5Company();
+    List<Post> findByCategory(Long cat_id);
 }
