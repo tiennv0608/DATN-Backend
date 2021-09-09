@@ -39,6 +39,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.3'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {

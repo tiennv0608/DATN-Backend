@@ -167,17 +167,17 @@ public class PostController {
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<Iterable<Post>> searchAdvanced(String title, Integer salary, String exp, String address) {
-        if (salary == null) {
-            salary = 0;
-        }
-        List<Post> postList = (List<Post>) iPostService.searchAdvanced(title, salary, exp, address);
-        if (postList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(postList, HttpStatus.OK);
-    }
+//    @GetMapping("/find")
+//    public ResponseEntity<Iterable<Post>> searchAdvanced(String title, Integer salary, String exp, String address) {
+//        if (salary == null) {
+//            salary = 0;
+//        }
+//        List<Post> postList = (List<Post>) iPostService.searchAdvanced(title, salary, exp, address);
+//        if (postList.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(postList, HttpStatus.OK);
+//    }
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     private ResponseEntity<?> findJob(@RequestParam(name = "keyword") String keyword, @RequestParam(name = "cat_id") Long cat_id, @RequestParam(name = "city_id") Long city_id, @RequestParam(name = "salary1") double salary1, @RequestParam(name = "salary2") double salary2) {
@@ -192,4 +192,19 @@ public class PostController {
         List<Post> postList = (List<Post>) iPostService.findAll();
         return new ResponseEntity<>(postList.size(), HttpStatus.OK);
     }
+    @GetMapping("/{id}/{cat_id}")
+    public ResponseEntity<?> findAllByCategory(@PathVariable(name = "id") Long id, @PathVariable(name = "cat_id") Long cat_id){
+        System.out.println("wtf");
+        System.out.println(cat_id);
+        List<Post> posts = iPostService.findByCategory(cat_id,id);
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+    @GetMapping("/new")
+    private ResponseEntity<?> getnewPosts() {
+        return new ResponseEntity<>(iPostService.find20PostsOrderByIdDesc(), HttpStatus.OK);
+    }
+
 }

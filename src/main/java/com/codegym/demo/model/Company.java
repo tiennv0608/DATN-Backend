@@ -194,4 +194,5 @@ public class Company {
     public void setType(Constant.TypeName type) {
         this.type = type;
     }
+
 }

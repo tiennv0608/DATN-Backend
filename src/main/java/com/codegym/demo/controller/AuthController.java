@@ -14,8 +14,11 @@ import com.codegym.demo.security.jwt.UserJwtService;
 import com.codegym.demo.security.principal.CompanyPrinciple;
 import com.codegym.demo.security.principal.UserPrinciple;
 import com.codegym.demo.service.company.ICompanyService;
+import com.codegym.demo.service.email.EmailService;
 import com.codegym.demo.service.user.IUserService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +31,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.codegym.demo.dto.response.ResponseBody;
+import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/auth")
 @RestController
@@ -50,9 +54,11 @@ public class AuthController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/users/register")
-    public ResponseEntity<?> register(@Validated @RequestBody UserRegisterForm registerForm, BindingResult bindingResult) {
+    public ResponseEntity<?> register(@Validated @RequestBody UserRegisterForm registerForm, BindingResult bindingResult, HttpServletRequest request) throws Exception {
         try {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
@@ -62,7 +68,11 @@ public class AuthController {
             }
             User user = new User(registerForm.getName(), registerForm.getEmail(), registerForm.getPassword(), registerForm.getPhone());
             user.setType(Constant.TypeName.USER);
-            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, userService.save(user)), HttpStatus.CREATED);
+            User user1 = userService.save(user);
+            if (user1 != null){
+                emailService.sendVerificationEmail(user);
+            }
+            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, user1), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -85,7 +95,7 @@ public class AuthController {
     }
 
     @PostMapping("/companies/register")
-    public ResponseEntity<ResponseBody> registerMerchant(@Validated @RequestBody CompanyRegisterForm registerForm, BindingResult bindingResult) {
+    public ResponseEntity<ResponseBody> registerMerchant(@Validated @RequestBody CompanyRegisterForm registerForm, BindingResult bindingResult, HttpServletRequest request) throws Exception {
         try {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
@@ -109,7 +119,11 @@ public class AuthController {
             companyService.save(company);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
             company.setCompanyCode(companyCode);
-            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, companyService.save(company)), HttpStatus.CREATED);
+            Company company1 = companyService.save(company);
+            if (company1 != null){
+                emailService.sendVerificationEmailCompany(company);
+            }
+            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, company1), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -129,5 +143,6 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new ResponseBody(Response.OBJECT_NOT_FOUND, null), HttpStatus.FORBIDDEN);
         }
+
     }
 }

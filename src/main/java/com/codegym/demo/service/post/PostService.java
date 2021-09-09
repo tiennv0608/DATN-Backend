@@ -61,10 +61,10 @@ public class PostService implements IPostService{
         return postRepository.findAllBySalaryIsGreaterThan(salary);
     }
 
-    @Override
-    public Iterable<Post> searchAdvanced(String title, Integer salary,String exp, String address) {
-        return postRepository.searchAdvanced(title, salary,exp,address);
-    }
+//    @Override
+//    public Iterable<Post> searchAdvanced(String title, Integer salary,String exp, String address) {
+////        return postRepository.searchAdvanced(title, salary,exp,address);
+//    }
 
     @Override
     public PostResponse convert(Post post) {
@@ -144,5 +144,21 @@ public class PostService implements IPostService{
     @Override
     public Iterable<Post> findTop5Company() {
         return postRepository.findTop5Company();
+    }
+
+    @Override
+    public List<Post> findByCategory(Long cat_id, Long id) {
+        return postRepository.findAllByCategory(cat_id,id);
+    }
+
+    @Override
+    public List<Post> find20PostsOrderByIdDesc() {
+        List<Post> posts = new ArrayList<>(20);
+        for (Post post: postRepository.findAllByOrderByIdDesc()) {
+            if (!posts.add(post)){
+                break;
+            }
+        }
+        return posts;
     }
 }
