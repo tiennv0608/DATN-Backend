@@ -24,23 +24,17 @@ public class User {
 
     private Constant.TypeName type;
 
-    @Column(name = "verification_code", length = 64)
-    private String verificationCode;
-
-    private boolean enabled;
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String password, String phone, Constant.TypeName type, String verificationCode, boolean enabled) {
+    public User(Long id, String name, String email, String password, String phone, Constant.TypeName type) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.type = type;
-        this.verificationCode = verificationCode;
-        this.enabled = enabled;
     }
 
     public User(@NotBlank @Size(min = 3, max = 50) String name,
@@ -101,19 +95,4 @@ public class User {
         this.type = type;
     }
 
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 }

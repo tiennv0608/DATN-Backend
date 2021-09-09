@@ -9,6 +9,5 @@ import java.util.Optional;
 public interface IUserService extends IGeneralService<User>, UserDetailsService {
     Optional<User> findByEmail(String email); //Tim kiem email co ton tai trong DB khong?
     Boolean existsByEmail(String email); //email da co trong DB chua?
-    Boolean verify(String verificationCode);
 
 }

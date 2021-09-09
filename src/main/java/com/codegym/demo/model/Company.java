@@ -43,11 +43,6 @@ public class Company {
 
     private Constant.TypeName type;
 
-    @Column(name = "verification_code", length = 64)
-    private String verificationCode;
-
-    private boolean enabled;
-
     public Company() {
     }
 
@@ -200,19 +195,4 @@ public class Company {
         this.type = type;
     }
 
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 }
