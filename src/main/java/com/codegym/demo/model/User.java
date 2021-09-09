@@ -2,10 +2,7 @@ package com.codegym.demo.model;
 
 import com.codegym.demo.constant.Constant;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -27,15 +24,23 @@ public class User {
 
     private Constant.TypeName type;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    private boolean enabled;
+
     public User() {
     }
 
-    public User(String name, String email, String password, String phone, Constant.TypeName type) {
+    public User(Long id, String name, String email, String password, String phone, Constant.TypeName type, String verificationCode, boolean enabled) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.type = type;
+        this.verificationCode = verificationCode;
+        this.enabled = enabled;
     }
 
     public User(@NotBlank @Size(min = 3, max = 50) String name,
@@ -94,5 +99,21 @@ public class User {
 
     public void setType(Constant.TypeName type) {
         this.type = type;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

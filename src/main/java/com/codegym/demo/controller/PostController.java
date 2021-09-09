@@ -187,9 +187,37 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+    //    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+//    private ResponseEntity<?> findAllPPost(Integer page){
+//        Page<Post> postResponses;
+//        Pageable pageable;
+//        if(page!=null){
+//            pageable = PageRequest.of(page,6);
+//        }
+//        else {
+//            pageable = PageRequest.of(0,6);
+//        }
+//        postResponses = postService.findAllPage(pageable);
+//        return new ResponseEntity<>(postResponses,HttpStatus.OK);
+//    }
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     private ResponseEntity<?> countPosts() {
         List<Post> postList = (List<Post>) iPostService.findAll();
         return new ResponseEntity<>(postList.size(), HttpStatus.OK);
     }
+    @GetMapping("/{id}/{cat_id}")
+    public ResponseEntity<?> findAllByCategory(@PathVariable(name = "id") Long id, @PathVariable(name = "cat_id") Long cat_id){
+        System.out.println("wtf");
+        System.out.println(cat_id);
+        List<Post> posts = iPostService.findByCategory(cat_id,id);
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+    @GetMapping("/new")
+    private ResponseEntity<?> getnewPosts() {
+        return new ResponseEntity<>(iPostService.find20PostsOrderByIdDesc(), HttpStatus.OK);
+    }
+
 }

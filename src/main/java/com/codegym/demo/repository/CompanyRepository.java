@@ -15,4 +15,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Boolean existsByEmail(String email); //email da co trong DB chua?
 
     Boolean existsByCompanyName(String companyName);
+
+    Company findByVerificationCode(String code);
 }

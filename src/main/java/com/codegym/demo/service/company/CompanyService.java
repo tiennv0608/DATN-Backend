@@ -1,9 +1,11 @@
 package com.codegym.demo.service.company;
 
 import com.codegym.demo.model.Company;
+import com.codegym.demo.model.User;
 import com.codegym.demo.repository.CompanyRepository;
 import com.codegym.demo.security.principal.CompanyPrinciple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -105,5 +107,19 @@ public class CompanyService implements ICompanyService {
             company.setNumberOfStaff(companyOptional.get().getNumberOfStaff());
         }
         return company;
+    }
+
+    @Override
+    public Boolean verify(String verificationCode) {
+        Company company = companyRepository.findByVerificationCode(verificationCode);
+
+        if (company == null || company.isEnabled()) {
+            return false;
+        } else {
+            company.setVerificationCode(null);
+            company.setEnabled(true);
+            companyRepository.save(company);
+            return true;
+        }
     }
 }
