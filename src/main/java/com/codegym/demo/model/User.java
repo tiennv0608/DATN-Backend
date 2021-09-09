@@ -2,10 +2,7 @@ package com.codegym.demo.model;
 
 import com.codegym.demo.constant.Constant;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -27,10 +24,12 @@ public class User {
 
     private Constant.TypeName type;
 
+
     public User() {
     }
 
-    public User(String name, String email, String password, String phone, Constant.TypeName type) {
+    public User(Long id, String name, String email, String password, String phone, Constant.TypeName type) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -95,4 +94,5 @@ public class User {
     public void setType(Constant.TypeName type) {
         this.type = type;
     }
+
 }
