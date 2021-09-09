@@ -17,14 +17,12 @@ public class UserPrinciple implements UserDetails {
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> types;
-    private boolean enabled;
 
-    public UserPrinciple(Long id, String name, String password, Collection<? extends GrantedAuthority> types, boolean enabled) {
+    public UserPrinciple(Long id, String name, String password, Collection<? extends GrantedAuthority> types) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.types = types;
-        this.enabled = enabled;
     }
 
     public static UserPrinciple build(User user) {
@@ -35,8 +33,7 @@ public class UserPrinciple implements UserDetails {
                 user.getId(),
                 user.getName(),
                 user.getPassword(),
-                authorities,
-                user.isEnabled()
+                authorities
         );
     }
 
@@ -72,7 +69,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.enabled;
+        return true;
     }
 
     @Override

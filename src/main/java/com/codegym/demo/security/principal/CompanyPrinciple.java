@@ -17,14 +17,12 @@ public class CompanyPrinciple implements UserDetails {
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> types;
-    private boolean enable;
 
-    public CompanyPrinciple(Long id, String name, String password, Collection<? extends GrantedAuthority> types, boolean enable) {
+    public CompanyPrinciple(Long id, String name, String password, Collection<? extends GrantedAuthority> types) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.types = types;
-        this.enable = enable;
     }
 
     public static CompanyPrinciple build(Company company) {
@@ -35,8 +33,7 @@ public class CompanyPrinciple implements UserDetails {
                 company.getId(),
                 company.getCompanyName(),
                 company.getPassword(),
-                authorities,
-                company.isEnabled()
+                authorities
         );
     }
 
@@ -72,7 +69,7 @@ public class CompanyPrinciple implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.enable;
+        return true;
     }
 
     @Override
