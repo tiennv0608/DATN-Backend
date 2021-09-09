@@ -68,11 +68,11 @@ public class AuthController {
             }
             User user = new User(registerForm.getName().trim(), registerForm.getEmail().trim(), registerForm.getPassword(), registerForm.getPhone());
             user.setType(Constant.TypeName.USER);
-            String randomCode = RandomString.make(64);
-            user.setVerificationCode(randomCode);
-            user.setEnabled(false);
-            emailService.sendVerificationEmail(user,getSiteURL(request));
-            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, userService.save(user)), HttpStatus.CREATED);
+            User user1 = userService.save(user);
+            if (user1 != null){
+                emailService.sendVerificationEmail(user);
+            }
+            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, user1), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -119,11 +119,11 @@ public class AuthController {
             companyService.save(company);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
             company.setCompanyCode(companyCode);
-            String randomCode = RandomString.make(64);
-            company.setVerificationCode(randomCode);
-            company.setEnabled(false);
-            emailService.sendVerificationEmailCompany(company,getSiteURL(request));
-            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, companyService.save(company)), HttpStatus.CREATED);
+            Company company1 = companyService.save(company);
+            if (company1 != null){
+                emailService.sendVerificationEmailCompany(company);
+            }
+            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, company1), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -144,18 +144,5 @@ public class AuthController {
             return new ResponseEntity<>(new ResponseBody(Response.OBJECT_NOT_FOUND, null), HttpStatus.FORBIDDEN);
         }
 
-    }
-    public String getSiteURL (HttpServletRequest request) {
-        String siteURL = request.getRequestURL().toString();
-        return siteURL.replace(request.getServletPath(), "");
-    }
-    @GetMapping("/verify")
-    public String verifyUser(@Param("code") String code) {
-        System.out.println("thanhcong");
-        if (userService.verify(code)|| companyService.verify(code)) {
-            return "verify_success";
-        } else {
-            return "verify_fail";
-        }
     }
 }

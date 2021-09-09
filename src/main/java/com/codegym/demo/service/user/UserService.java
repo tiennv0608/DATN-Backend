@@ -63,17 +63,4 @@ public class UserService implements IUserService {
         return UserPrinciple.build(user.get());
     }
 
-    @Override
-    public Boolean verify(String verificationCode) {
-        User user = userRepository.findByVerificationCode(verificationCode);
-
-        if (user == null || user.isEnabled()) {
-            return false;
-        } else {
-            user.setVerificationCode(null);
-            user.setEnabled(true);
-            userRepository.save(user);
-            return true;
-        }
-    }
 }

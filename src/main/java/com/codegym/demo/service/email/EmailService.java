@@ -15,16 +15,12 @@ public class EmailService {
     @Autowired
     JavaMailSender mailSender;
 
-    public void sendVerificationEmail(User user, String siteURL)
+    public void sendVerificationEmail(User user)
             throws MessagingException, UnsupportedEncodingException {
-        String verifyURL =siteURL + "/auth/verify?code=" +user.getVerificationCode() ;
-        System.out.println(verifyURL);
-        String subject = "Please verify your registration";
+        String subject = "Register notification";
         String senderName = "admin";
         String mailContent = "<p>Dear " + user.getName()+",</p>";
-        mailContent += "<p>Please click the link below to verify your registration:</p>";
-        mailContent += "<h3><a href=\""+verifyURL+"\">VERIFY</a></h3>";
-        mailContent += "<p>Thank you</p>";
+        mailContent += "<p> Bạn đã đăng ký thành công </p>";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -34,18 +30,13 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setText(mailContent,true);
         mailSender.send(message);
-
     }
-    public void sendVerificationEmailCompany(Company company, String siteURL)
+    public void sendVerificationEmailCompany(Company company)
             throws MessagingException, UnsupportedEncodingException {
-        String verifyURL =siteURL + "/auth/verify?code=" +company.getVerificationCode() ;
-        System.out.println(verifyURL);
-        String subject = "Please verify your registration";
+        String subject = "Register notification";
         String senderName = "admin";
         String mailContent = "<p>Dear " + company.getCompanyName()+",</p>";
-        mailContent += "<p>Please click the link below to verify your registration:</p>";
-        mailContent += "<h3><a href=\""+verifyURL+"\">VERIFY</a></h3>";
-        mailContent += "<p>Thank you</p>";
+        mailContent += "<p> Bạn đã đăng ký thành công </p>";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);

@@ -108,18 +108,4 @@ public class CompanyService implements ICompanyService {
         }
         return company;
     }
-
-    @Override
-    public Boolean verify(String verificationCode) {
-        Company company = companyRepository.findByVerificationCode(verificationCode);
-
-        if (company == null || company.isEnabled()) {
-            return false;
-        } else {
-            company.setVerificationCode(null);
-            company.setEnabled(true);
-            companyRepository.save(company);
-            return true;
-        }
-    }
 }
