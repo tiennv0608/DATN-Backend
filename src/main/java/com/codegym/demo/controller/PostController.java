@@ -163,7 +163,7 @@ public class PostController {
     public ResponseEntity<Iterable<Post>> findAllBySalaryBetween(String salary) {
         List<Post> postList = (List<Post>) iPostService.findAllBySalaryContaining(Double.parseDouble(salary));
         if (postList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(postList, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
@@ -175,7 +175,7 @@ public class PostController {
         }
         List<Post> postList = (List<Post>) iPostService.searchAdvanced(title, salary, exp, address);
         if (postList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(postList, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
@@ -195,10 +195,10 @@ public class PostController {
     }
 
     @GetMapping("/{id}/{cat_id}")
-    public ResponseEntity<?> findAllByCategory(@PathVariable(name = "id") Long id, @PathVariable(name = "cat_id") Long cat_id){
+    public ResponseEntity<?> findAllByCategory(@PathVariable(name = "id") Long id, @PathVariable(name = "cat_id") Long cat_id) {
         System.out.println("wtf");
         System.out.println(cat_id);
-        List<Post> posts = iPostService.findByCategory(cat_id,id);
+        List<Post> posts = iPostService.findByCategory(cat_id, id);
         if (posts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
