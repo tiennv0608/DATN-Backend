@@ -52,6 +52,7 @@ public class PostController {
             }
             Company company = iCompanyService.findById(post.getCompany().getId()).get();
             post.setCode("CODE" + company.getCompanyCode() + post.getCategory().getId());
+            post.setAddress(post.getAddress() + ", " + post.getCity().getName());
             post.setStatus(true);
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -205,16 +206,18 @@ public class PostController {
         List<Post> postList = (List<Post>) iPostService.findAll();
         return new ResponseEntity<>(postList.size(), HttpStatus.OK);
     }
+
     @GetMapping("/{id}/{cat_id}")
-    public ResponseEntity<?> findAllByCategory(@PathVariable(name = "id") Long id, @PathVariable(name = "cat_id") Long cat_id){
+    public ResponseEntity<?> findAllByCategory(@PathVariable(name = "id") Long id, @PathVariable(name = "cat_id") Long cat_id) {
         System.out.println("wtf");
         System.out.println(cat_id);
-        List<Post> posts = iPostService.findByCategory(cat_id,id);
+        List<Post> posts = iPostService.findByCategory(cat_id, id);
         if (posts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
+
     @GetMapping("/new")
     private ResponseEntity<?> getnewPosts() {
         return new ResponseEntity<>(iPostService.find20PostsOrderByIdDesc(), HttpStatus.OK);

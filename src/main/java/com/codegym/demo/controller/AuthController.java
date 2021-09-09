@@ -66,7 +66,7 @@ public class AuthController {
             if (companyService.existsByEmail(registerForm.getEmail()) || userService.existsByEmail(registerForm.getEmail())) {
                 return new ResponseEntity<>(new ResponseBody(Response.EMAIL_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
-            User user = new User(registerForm.getName(), registerForm.getEmail(), registerForm.getPassword(), registerForm.getPhone());
+            User user = new User(registerForm.getName().trim(), registerForm.getEmail().trim(), registerForm.getPassword(), registerForm.getPhone());
             user.setType(Constant.TypeName.USER);
             String randomCode = RandomString.make(64);
             user.setVerificationCode(randomCode);
@@ -109,9 +109,9 @@ public class AuthController {
 
             String encode = passwordEncoder.encode(registerForm.getPassword());
             Company company = new Company(
-                    registerForm.getCompanyName(),
-                    registerForm.getShortName(),
-                    registerForm.getEmail(),
+                    registerForm.getCompanyName().trim(),
+                    registerForm.getShortName().trim(),
+                    registerForm.getEmail().trim(),
                     encode,
                     registerForm.getDescription());
             company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
