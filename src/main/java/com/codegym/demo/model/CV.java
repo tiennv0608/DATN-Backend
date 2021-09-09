@@ -11,14 +11,17 @@ public class CV {
     @ManyToOne
     private User user;
 
+    private String name;
+
     private String link;
 
     public CV() {
     }
 
-    public CV(User user, String link) {
+    public CV(User user, String link,String name) {
         this.user = user;
         this.link = link;
+        this.name = name;
     }
 
     public Long getId() {
@@ -43,5 +46,13 @@ public class CV {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

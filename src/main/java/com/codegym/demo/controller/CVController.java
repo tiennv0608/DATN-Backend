@@ -32,4 +32,12 @@ public class CVController {
     public ResponseEntity<CV> save(@RequestBody CV cv) {
         return new ResponseEntity<>(icvService.save(cv), HttpStatus.CREATED);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Iterable<CV>> findByUserId(@PathVariable Long id){
+        List<CV> cvs = (List<CV>) icvService.getAllByUserId(id);
+        if (cvs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(cvs, HttpStatus.OK);
+    }
 }

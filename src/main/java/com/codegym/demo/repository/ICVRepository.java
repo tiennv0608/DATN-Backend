@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ICVRepository extends JpaRepository<CV,Long> {
+    Iterable<CV> getAllByUserId(Long id);
 }

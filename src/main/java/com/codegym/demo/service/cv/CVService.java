@@ -30,4 +30,9 @@ public class CVService implements ICVService{
     public void remove(Long id) {
         icvRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<CV> getAllByUserId(Long id) {
+        return icvRepository.getAllByUserId(id);
+    }
 }
