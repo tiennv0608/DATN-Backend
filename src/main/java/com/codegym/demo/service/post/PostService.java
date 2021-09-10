@@ -61,10 +61,10 @@ public class PostService implements IPostService{
         return postRepository.findAllBySalaryIsGreaterThan(salary);
     }
 
-//    @Override
-//    public Iterable<Post> searchAdvanced(String title, Integer salary,String exp, String address) {
-////        return postRepository.searchAdvanced(title, salary,exp,address);
-//    }
+    @Override
+    public Iterable<Post> searchAdvanced(String title, Integer salary,String exp, String address) {
+        return postRepository.searchAdvanced(title, salary,exp,address);
+    }
 
     @Override
     public PostResponse convert(Post post) {

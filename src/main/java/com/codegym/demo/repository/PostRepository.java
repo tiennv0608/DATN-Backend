@@ -43,9 +43,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "HAVING SUM(quantity)\n" +
             "ORDER BY SUM(quantity) desc limit 5")
     Iterable<Post> findTop5Company();
-
     @Query(value = "select * from post where category_id = ?1 and id != ?2",nativeQuery = true)
     List<Post> findAllByCategory(Long cat_id, Long id);
     List<Post> findAllByOrderByIdDesc();
-
 }

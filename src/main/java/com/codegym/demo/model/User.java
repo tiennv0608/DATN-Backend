@@ -22,6 +22,8 @@ public class User {
 
     private String phone;
 
+    private Boolean enabled;
+
     private Constant.TypeName type;
 
 
@@ -85,6 +87,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Constant.TypeName getType() {
