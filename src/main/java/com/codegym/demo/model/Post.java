@@ -41,6 +41,7 @@ public class Post {
     private Company company;
     @OneToOne
     private City city;
+
     public Post() {
     }
 

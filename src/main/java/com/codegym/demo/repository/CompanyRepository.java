@@ -5,6 +5,7 @@ import com.codegym.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +16,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Boolean existsByEmail(String email); //email da co trong DB chua?
 
     Boolean existsByCompanyName(String companyName);
+
+    Iterable<Company> findAllByEnabledOrderByIdAsc(Boolean enable);
+
 }

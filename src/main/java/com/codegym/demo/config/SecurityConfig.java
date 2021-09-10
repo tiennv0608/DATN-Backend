@@ -2,6 +2,7 @@ package com.codegym.demo.config;
 
 import com.codegym.demo.security.jwt.JwtAuthenticationFilter;
 import com.codegym.demo.security.jwt.RestAuthenticationEntryPoint;
+import com.codegym.demo.service.admin.IAdminService;
 import com.codegym.demo.service.company.ICompanyService;
 import com.codegym.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private ICompanyService companyService;
+
+    @Autowired
+    private IAdminService adminService;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -57,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
         auth.userDetailsService(companyService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(adminService).passwordEncoder(passwordEncoder());
     }
 
     @Override

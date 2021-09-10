@@ -1,18 +1,17 @@
 package com.codegym.demo.service.user;
 
+import com.codegym.demo.constant.Constant;
+import com.codegym.demo.dto.request.UserRegisterForm;
 import com.codegym.demo.model.User;
 import com.codegym.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.codegym.demo.security.principal.UserPrinciple;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @Service
@@ -22,7 +21,6 @@ public class UserService implements IUserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
 
     @Override
     public Iterable<User> findAll() {
@@ -55,6 +53,18 @@ public class UserService implements IUserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Override
+    public User register(UserRegisterForm userRegisterForm) {
+        User user = new User();
+        user.setName(userRegisterForm.getName().trim());
+        user.setEmail(userRegisterForm.getEmail().trim());
+        String encode = passwordEncoder.encode(userRegisterForm.getPassword());
+        user.setPassword(encode);
+        user.setPhone(userRegisterForm.getPhone());
+        user.setType(Constant.TypeName.USER);
+        user.setEnabled(false);
+        return userRepository.save(user);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -62,5 +72,6 @@ public class UserService implements IUserService {
         if (!user.isPresent()) throw new UsernameNotFoundException(username);
         return UserPrinciple.build(user.get());
     }
+
 
 }
