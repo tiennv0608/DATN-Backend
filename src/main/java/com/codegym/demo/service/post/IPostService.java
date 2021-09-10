@@ -24,6 +24,6 @@ public interface IPostService extends IGeneralService<Post> {
 
     Iterable<Post> findTop5Company();
     List<Post> findByCategory(Long cat_id, Long id);
-    List<Post> find20PostsOrderByIdDesc();
+    List<Post> find6PostsOrderByIdDesc();
 
 }

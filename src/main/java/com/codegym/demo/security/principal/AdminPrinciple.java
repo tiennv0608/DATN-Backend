@@ -1,6 +1,7 @@
 package com.codegym.demo.security.principal;
 
-import com.codegym.demo.model.Company;
+import com.codegym.demo.model.Admin;
+import com.codegym.demo.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,32 +12,29 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class CompanyPrinciple implements UserDetails {
+public class AdminPrinciple implements UserDetails {
     private Long id;
     private String name;
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> types;
-    private Boolean enabled;
 
-    public CompanyPrinciple(Long id, String name, String password, Collection<? extends GrantedAuthority> types, Boolean enabled) {
+    public AdminPrinciple(Long id, String name, String password, Collection<? extends GrantedAuthority> types) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.types = types;
-        this.enabled = enabled;
     }
 
-    public static CompanyPrinciple build(Company company) {
+    public static AdminPrinciple build(Admin admin) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority authority = new SimpleGrantedAuthority(company.getType().name());
+        GrantedAuthority authority = new SimpleGrantedAuthority(admin.getType().name());
         authorities.add(authority);
-        return new CompanyPrinciple(
-                company.getId(),
-                company.getCompanyName(),
-                company.getPassword(),
-                authorities,
-                company.isEnabled()
+        return new AdminPrinciple(
+                admin.getId(),
+                admin.getName(),
+                admin.getPassword(),
+                authorities
         );
     }
 
@@ -72,7 +70,7 @@ public class CompanyPrinciple implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 
     @Override
@@ -80,17 +78,12 @@ public class CompanyPrinciple implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CompanyPrinciple merchant = (CompanyPrinciple) o;
-        return Objects.equals(id, merchant.id);
+        AdminPrinciple adminPrinciple = (AdminPrinciple) o;
+        return Objects.equals(id, adminPrinciple.id);
     }
 
     @Override
     public int hashCode() {
         return super.hashCode();
     }
-
-
-
-
-
 }

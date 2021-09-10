@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -107,5 +108,17 @@ public class CompanyService implements ICompanyService {
             company.setNumberOfStaff(companyOptional.get().getNumberOfStaff());
         }
         return company;
+    }
+
+    @Override
+    public Iterable<Company> getEnableCompanies() {
+        return companyRepository.findAllByEnabledOrderByIdAsc(false);
+    }
+
+    @Override
+    public Company setEnable(long id){
+        Optional<Company> company = companyRepository.findById(id);
+        company.get().setEnabled(true);
+        return companyRepository.save(company.get());
     }
 }
