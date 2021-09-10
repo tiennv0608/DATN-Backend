@@ -1,5 +1,6 @@
 package com.codegym.demo.controller;
 
+import com.codegym.demo.model.CV;
 import com.codegym.demo.model.Candidate;
 import com.codegym.demo.service.candidate.ICandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,12 @@ private ICandidateService iCandidateService;
     public ResponseEntity<Candidate> save(@RequestBody Candidate cv) {
         return new ResponseEntity<>(iCandidateService.save(cv), HttpStatus.CREATED);
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Iterable<Candidate>> findByUserId(@PathVariable Long id){
+        List<Candidate> candidates = (List<Candidate>) iCandidateService.getAllByCompanyId(id);
+        if (candidates.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(candidates, HttpStatus.OK);
+    }
 }
