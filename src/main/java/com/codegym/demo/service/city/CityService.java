@@ -18,16 +18,16 @@ public class CityService implements ICityService{
 
     @Override
     public Optional<City> findById(Long id) {
-        return Optional.empty();
+        return cityRepository.findById(id);
     }
 
     @Override
     public City save(City city) {
-        return null;
+        return cityRepository.save(city);
     }
 
     @Override
     public void remove(Long id) {
-
+        cityRepository.deleteById(id);
     }
 }

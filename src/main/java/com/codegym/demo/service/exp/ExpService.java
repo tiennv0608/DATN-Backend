@@ -31,4 +31,9 @@ public class ExpService implements IExpService{
     public void remove(Long id) {
         expRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Exp> findAllByUser_id(Long id) {
+        return expRepository.findAllByUser_id(id);
+    }
 }

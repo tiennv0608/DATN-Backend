@@ -50,6 +50,7 @@ public class UserService implements IUserService {
         return userRepository.findByEmail(email);
     }
 
+
     @Override
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
