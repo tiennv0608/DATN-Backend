@@ -1,5 +1,7 @@
 package com.codegym.demo.service.user;
 
+import com.codegym.demo.constant.Constant;
+import com.codegym.demo.dto.request.UserRegisterForm;
 import com.codegym.demo.model.User;
 import com.codegym.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,16 @@ public class UserService implements IUserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Override
+    public User register(UserRegisterForm userRegisterForm) {
+        User user = new User();
+        user.setName(userRegisterForm.getName().trim());
+        user.setEmail(userRegisterForm.getEmail().trim());
+        user.setPassword(userRegisterForm.getPassword());
+        user.setPhone(userRegisterForm.getPhone());
+        user.setType(Constant.TypeName.USER);
+        return user;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -62,5 +74,6 @@ public class UserService implements IUserService {
         if (!user.isPresent()) throw new UsernameNotFoundException(username);
         return UserPrinciple.build(user.get());
     }
+
 
 }

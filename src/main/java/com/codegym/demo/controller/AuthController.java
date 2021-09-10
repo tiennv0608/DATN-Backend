@@ -31,6 +31,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.codegym.demo.dto.response.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/auth")
@@ -66,10 +67,9 @@ public class AuthController {
             if (companyService.existsByEmail(registerForm.getEmail()) || userService.existsByEmail(registerForm.getEmail())) {
                 return new ResponseEntity<>(new ResponseBody(Response.EMAIL_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
-            User user = new User(registerForm.getName().trim(), registerForm.getEmail().trim(), registerForm.getPassword(), registerForm.getPhone());
-            user.setType(Constant.TypeName.USER);
+            User user = userService.register(registerForm);
             User user1 = userService.save(user);
-            if (user1 != null){
+            if (user1 != null) {
                 emailService.sendVerificationEmail(user);
             }
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, user1), HttpStatus.CREATED);
@@ -106,21 +106,20 @@ public class AuthController {
             if (companyService.existsByEmail(registerForm.getEmail()) || userService.existsByEmail(registerForm.getEmail())) {
                 return new ResponseEntity<>(new ResponseBody(Response.EMAIL_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
-
             String encode = passwordEncoder.encode(registerForm.getPassword());
-            Company company = new Company(
-                    registerForm.getCompanyName().trim(),
-                    registerForm.getShortName().trim(),
-                    registerForm.getEmail().trim(),
-                    encode,
-                    registerForm.getDescription());
-            company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
-            company.setType(Constant.TypeName.COMPANY);
+            Company company = new Company();
             companyService.save(company);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
+            company.setCompanyName(registerForm.getCompanyName().trim());
+            company.setShortName(registerForm.getShortName().trim());
+            company.setEmail(registerForm.getEmail().trim());
+            company.setPassword(encode);
+            company.setDescription(registerForm.getDescription());
+            company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
+            company.setType(Constant.TypeName.COMPANY);
             company.setCompanyCode(companyCode);
             Company company1 = companyService.save(company);
-            if (company1 != null){
+            if (company1 != null) {
                 emailService.sendVerificationEmailCompany(company);
             }
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, company1), HttpStatus.CREATED);
