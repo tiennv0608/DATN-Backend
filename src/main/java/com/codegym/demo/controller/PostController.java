@@ -209,5 +209,4 @@ public class PostController {
     private ResponseEntity<?> getnewPosts() {
         return new ResponseEntity<>(iPostService.find20PostsOrderByIdDesc(), HttpStatus.OK);
     }
-
 }
