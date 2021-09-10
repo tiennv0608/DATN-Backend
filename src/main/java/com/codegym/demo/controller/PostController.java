@@ -192,6 +192,7 @@ public class PostController {
         List<Post> postList = (List<Post>) iPostService.findAll();
         return new ResponseEntity<>(postList.size(), HttpStatus.OK);
     }
+
     @GetMapping("/{id}/{cat_id}")
     public ResponseEntity<?> findAllByCategory(@PathVariable(name = "id") Long id, @PathVariable(name = "cat_id") Long cat_id){
         System.out.println("wtf");
@@ -202,9 +203,9 @@ public class PostController {
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
+
     @GetMapping("/new")
     private ResponseEntity<?> getnewPosts() {
         return new ResponseEntity<>(iPostService.find20PostsOrderByIdDesc(), HttpStatus.OK);
     }
-
 }
