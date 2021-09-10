@@ -49,4 +49,19 @@ public class CompanyController {
         companyService.save(company);
         return new ResponseEntity<>(company, HttpStatus.OK);
     }
+
+    @GetMapping("/permit")
+    public ResponseEntity<List<Company>> findAllByEnable() {
+        List<Company> companies = (List<Company>) companyService.getEnableCompanies();
+        if (companies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+    @GetMapping("/enable/{id}")
+    public ResponseEntity<?> enable(@PathVariable Long id) {
+        Company company = companyService.setEnable(id);
+        return new ResponseEntity<>(company.isEnabled(),HttpStatus.OK);
+    }
+
 }

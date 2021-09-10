@@ -6,6 +6,7 @@ import com.codegym.demo.model.User;
 import com.codegym.demo.service.IGeneralService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ICompanyService extends IGeneralService<Company>, UserDetailsService {
@@ -18,4 +19,9 @@ public interface ICompanyService extends IGeneralService<Company>, UserDetailsSe
     Company changeInfo(Long id, Company company);
 
     Company register(CompanyRegisterForm companyRegisterForm);
+
+    Iterable<Company> getEnableCompanies ();
+
+    Company setEnable(long id);
+
 }

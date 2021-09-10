@@ -152,10 +152,13 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public List<Post> find20PostsOrderByIdDesc() {
-        List<Post> posts = new ArrayList<>(20);
-        for (Post post: postRepository.findAllByOrderByIdDesc()) {
-            if (!posts.add(post)){
+    public List<Post> find6PostsOrderByIdDesc() {
+        List<Post> posts = new ArrayList<>(6);
+        List<Post> postList = postRepository.findAllByOrderByIdDesc();
+        for (int i=0;i<postList.size();i++) {
+            if (i<6){
+                posts.add(postList.get(i));
+            }else {
                 break;
             }
         }
