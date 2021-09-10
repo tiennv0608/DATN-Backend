@@ -204,7 +204,7 @@ public class PostController {
     }
     @GetMapping("/new")
     private ResponseEntity<?> getnewPosts() {
-        return new ResponseEntity<>(iPostService.find20PostsOrderByIdDesc(), HttpStatus.OK);
+        return new ResponseEntity<>(iPostService.find6PostsOrderByIdDesc(), HttpStatus.OK);
     }
 
 }
