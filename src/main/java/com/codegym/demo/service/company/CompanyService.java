@@ -125,13 +125,14 @@ public class CompanyService implements ICompanyService {
         company.setType(Constant.TypeName.COMPANY);
         company.setEnabled(false);
         return companyRepository.save(company);
+    }
 
     public Iterable<Company> getEnableCompanies() {
         return companyRepository.findAllByEnabledOrderByIdAsc(false);
     }
 
     @Override
-    public Company setEnable(long id){
+    public Company setEnable(long id) {
         Optional<Company> company = companyRepository.findById(id);
         company.get().setEnabled(true);
         return companyRepository.save(company.get());
