@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExpRepository extends PagingAndSortingRepository<Exp, Long> {
+    Iterable<Exp>findAllByUser_id(Long id);
 }

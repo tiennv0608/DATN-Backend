@@ -34,6 +34,14 @@ public class ExpController {
         }
         return new ResponseEntity<>(expOptional.get(), HttpStatus.OK);
     }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Iterable<Exp>>findByUser_id(@PathVariable("id") Long id){
+        List<Exp> expList = (List<Exp>) expService.findAllByUser_id(id);
+        if(expList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(expList, HttpStatus.OK);
+    }
     @PostMapping()
     public ResponseEntity<Exp> create(@RequestBody Exp exp){
         return new ResponseEntity<>(expService.save(exp),HttpStatus.CREATED);
