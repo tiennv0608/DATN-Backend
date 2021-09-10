@@ -1,5 +1,7 @@
 package com.codegym.demo.service.company;
 
+import com.codegym.demo.constant.Constant;
+import com.codegym.demo.dto.request.CompanyRegisterForm;
 import com.codegym.demo.model.Company;
 import com.codegym.demo.model.User;
 import com.codegym.demo.repository.CompanyRepository;
@@ -107,5 +109,20 @@ public class CompanyService implements ICompanyService {
             company.setNumberOfStaff(companyOptional.get().getNumberOfStaff());
         }
         return company;
+    }
+
+    @Override
+    public Company register(CompanyRegisterForm companyRegisterForm) {
+        Company company = new Company();
+        String encode = passwordEncoder.encode(companyRegisterForm.getPassword());
+        company.setCompanyName(companyRegisterForm.getCompanyName().trim());
+        company.setShortName(companyRegisterForm.getShortName().trim());
+        company.setEmail(companyRegisterForm.getEmail().trim());
+        company.setPassword(encode);
+        company.setDescription(companyRegisterForm.getDescription());
+        company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
+        company.setType(Constant.TypeName.COMPANY);
+        company.setEnabled(false);
+        return companyRepository.save(company);
     }
 }

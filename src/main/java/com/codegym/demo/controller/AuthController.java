@@ -68,11 +68,10 @@ public class AuthController {
                 return new ResponseEntity<>(new ResponseBody(Response.EMAIL_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
             User user = userService.register(registerForm);
-            User user1 = userService.save(user);
-            if (user1 != null) {
+            if (user != null) {
                 emailService.sendVerificationEmail(user);
             }
-            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, user1), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, user), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -95,7 +94,7 @@ public class AuthController {
     }
 
     @PostMapping("/companies/register")
-    public ResponseEntity<ResponseBody> registerMerchant(@Validated @RequestBody CompanyRegisterForm registerForm, BindingResult bindingResult, HttpServletRequest request) throws Exception {
+    public ResponseEntity<ResponseBody> registerCompany(@Validated @RequestBody CompanyRegisterForm registerForm, BindingResult bindingResult, HttpServletRequest request) throws Exception {
         try {
             if (bindingResult.hasFieldErrors()) {
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
@@ -106,17 +105,8 @@ public class AuthController {
             if (companyService.existsByEmail(registerForm.getEmail()) || userService.existsByEmail(registerForm.getEmail())) {
                 return new ResponseEntity<>(new ResponseBody(Response.EMAIL_IS_EXISTS, null), HttpStatus.CONFLICT);
             }
-            String encode = passwordEncoder.encode(registerForm.getPassword());
-            Company company = new Company();
-            companyService.save(company);
+            Company company = companyService.register(registerForm);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
-            company.setCompanyName(registerForm.getCompanyName().trim());
-            company.setShortName(registerForm.getShortName().trim());
-            company.setEmail(registerForm.getEmail().trim());
-            company.setPassword(encode);
-            company.setDescription(registerForm.getDescription());
-            company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
-            company.setType(Constant.TypeName.COMPANY);
             company.setCompanyCode(companyCode);
             Company company1 = companyService.save(company);
             if (company1 != null) {

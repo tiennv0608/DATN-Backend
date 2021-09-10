@@ -43,6 +43,8 @@ public class Company {
 
     private Constant.TypeName type;
 
+    private boolean enabled;
+
     public Company() {
     }
 
@@ -195,4 +197,11 @@ public class Company {
         this.type = type;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }
