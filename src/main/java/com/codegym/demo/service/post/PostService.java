@@ -165,4 +165,10 @@ public class PostService implements IPostService {
         }
         return posts;
     }
+
+    @Override
+    public Iterable<Post> findPostsByRecommended() {
+        return postRepository.findPostsByRecommendedIsTrue();
+    }
+
 }
