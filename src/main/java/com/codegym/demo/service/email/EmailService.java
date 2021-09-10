@@ -39,7 +39,7 @@ public class EmailService {
         mailContent += "<p> Bạn đã đăng ký thành công </p>";
 
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+        MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
         helper.setFrom("dongdd159@gmail.com",senderName);
         helper.setTo(company.getEmail());
