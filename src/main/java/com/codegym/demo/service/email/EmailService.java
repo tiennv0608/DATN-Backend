@@ -10,41 +10,43 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+
 @Service
 public class EmailService {
     @Autowired
     JavaMailSender mailSender;
 
     public void sendVerificationEmail(User user)
-            throws MessagingException, UnsupportedEncodingException {
+            throws MessagingException {
         String subject = "Register notification";
         String senderName = "admin";
-        String mailContent = "<p>Dear " + user.getName()+",</p>";
+        String mailContent = "<p>Dear " + user.getName() + ",</p>";
         mailContent += "<p> Bạn đã đăng ký thành công </p>";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
-        helper.setFrom("dongdd159@gmail.com",senderName);
+        helper.setFrom(senderName);
         helper.setTo(user.getEmail());
         helper.setSubject(subject);
-        helper.setText(mailContent,true);
+        helper.setText(mailContent, true);
         mailSender.send(message);
     }
+
     public void sendVerificationEmailCompany(Company company)
-            throws MessagingException, UnsupportedEncodingException {
+            throws MessagingException {
         String subject = "Register notification";
         String senderName = "admin";
-        String mailContent = "<p>Dear " + company.getCompanyName()+",</p>";
+        String mailContent = "<p>Dear " + company.getCompanyName() + ",</p>";
         mailContent += "<p> Bạn đã đăng ký thành công </p>";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
-        helper.setFrom("dongdd159@gmail.com",senderName);
+        helper.setFrom(senderName);
         helper.setTo(company.getEmail());
         helper.setSubject(subject);
-        helper.setText(mailContent,true);
+        helper.setText(mailContent, true);
         mailSender.send(message);
 
     }
