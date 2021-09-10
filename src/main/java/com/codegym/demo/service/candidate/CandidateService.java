@@ -31,8 +31,5 @@ public class CandidateService implements ICandidateService{
         candidateRepository.deleteById(id);
     }
 
-    @Override
-    public Iterable<Candidate> getAllByCompanyId(Long id) {
-        return candidateRepository.getAllByCompanyId(id);
-    }
+
 }
