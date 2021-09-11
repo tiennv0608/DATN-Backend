@@ -32,7 +32,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.codegym.demo.dto.response.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @RequestMapping("/auth")
 @RestController
@@ -140,19 +143,20 @@ public class AuthController {
         }
 
     }
+
     @PostMapping("/users/login")
     public ResponseEntity<ResponseBody> login(@Validated @RequestBody UserLoginForm loginForm) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            if (emailService.getType(loginForm.getEmail()).equals(Constant.TypeName.ADMIN.toString())){
+            if (emailService.getType(loginForm.getEmail()).equals(Constant.TypeName.ADMIN.toString())) {
                 String jwt = adminJwtService.generateTokenLogin(authentication);
                 AdminPrinciple adminPrinciple = (AdminPrinciple) authentication.getPrincipal();
                 Admin currentAdmin = adminService.findByEmail(loginForm.getEmail()).get();
                 return new ResponseEntity<>(new ResponseBody(Response.SUCCESS,
                         new JwtResponse(currentAdmin.getId(), jwt, currentAdmin.getName(), adminPrinciple.getAuthorities())),
                         HttpStatus.OK);
-            }else {
+            } else {
                 String jwt = userJwtService.generateTokenLogin(authentication);
                 UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
                 User currentUser = userService.findByEmail(loginForm.getEmail()).get();
@@ -164,6 +168,7 @@ public class AuthController {
             return new ResponseEntity<>(new ResponseBody(Response.OBJECT_NOT_FOUND, null), HttpStatus.FORBIDDEN);
         }
     }
+
     @PostMapping("/admins/register")
     public ResponseEntity<?> registeradmin(@Validated @RequestBody AdminRegisterForm registerForm, BindingResult bindingResult, HttpServletRequest request) throws Exception {
         try {
@@ -181,8 +186,33 @@ public class AuthController {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/getType")
     public ResponseEntity<?> getType(String email) {
         return new ResponseEntity<>(emailService.getType(email), HttpStatus.OK);
+    }
+
+    @PostMapping("/companies/{id}/change-password")
+    public ResponseEntity<?> changeCompanyPassword(@Valid @RequestBody CompanyPasswordForm companyPasswordForm, @PathVariable Long id, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        Optional<Company> company = companyService.findById(id);
+        if (!company.isPresent()) {
+            return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.NOT_FOUND);
+        }
+        if (companyPasswordForm.getNewPassword().trim().equals(companyPasswordForm.getCurrentPassword().trim())) {
+            return new ResponseEntity<>(new ResponseBody(Response.NEW_PASSWORD_IS_DUPLICATED, null), HttpStatus.CONFLICT);
+        }
+        boolean matches = passwordEncoder.matches(companyPasswordForm.getCurrentPassword(), company.get().getPassword());
+        if (companyPasswordForm.getNewPassword() != null) {
+            if (matches) {
+                company.get().setPassword(passwordEncoder.encode(companyPasswordForm.getNewPassword().trim()));
+                companyService.save(company.get());
+            } else {
+                return new ResponseEntity<>(new ResponseBody(Response.PASSWORD_IS_NOT_TRUE, null), HttpStatus.CONFLICT);
+            }
+        }
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, company.get()), HttpStatus.OK);
     }
 }
