@@ -42,6 +42,8 @@ public class Post {
     @OneToOne
     private City city;
 
+    private boolean recommended;
+
     public Post() {
     }
 
@@ -189,5 +191,13 @@ public class Post {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    public void setRecommended(boolean recommended) {
+        this.recommended = recommended;
     }
 }

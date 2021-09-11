@@ -8,6 +8,8 @@ public enum Response {
     OBJECT_NOT_FOUND("0004", "Object is not founded"),
     OBJECT_INVALID("0005","Object is invalid"),
     NAME_IS_EXISTS("0006","Name is invalid"),
+    PASSWORD_IS_NOT_TRUE("0007", "Password is not right"),
+    NEW_PASSWORD_IS_DUPLICATED("0008", "New password is duplicated"),
     SYSTEM_ERROR("9999", "System errors");
     private String responseCode;
     private String responseMessage;
