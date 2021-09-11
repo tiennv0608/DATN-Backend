@@ -233,7 +233,6 @@ public class PostController {
         } else {
             post.get().setRecommended(true);
         }
-//        Post post = post.get();
         return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post.get())), HttpStatus.OK);
     }
 }
