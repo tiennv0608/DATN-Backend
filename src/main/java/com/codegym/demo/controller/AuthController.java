@@ -124,6 +124,7 @@ public class AuthController {
             company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
             company.setType(Constant.TypeName.COMPANY);
             company.setEnabled(false);
+            company.setRecommended(false);
             companyService.save(company);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
             company.setCompanyCode(companyCode);

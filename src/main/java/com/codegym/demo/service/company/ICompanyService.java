@@ -17,7 +17,11 @@ public interface ICompanyService extends IGeneralService<Company>, UserDetailsSe
 
     Company changeInfo(Long id, Company company);
 
-    Iterable<Company> getEnableCompanies ();
+    Iterable<Company> getEnableCompanies (Boolean enable);
 
     Company setEnable(long id);
+
+    Company changeRecommend(long id);
+
+
 }
