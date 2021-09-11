@@ -51,8 +51,8 @@ public class CompanyController {
     }
 
     @GetMapping("/permit")
-    public ResponseEntity<List<Company>> findAllByEnable() {
-        List<Company> companies = (List<Company>) companyService.getEnableCompanies();
+    public ResponseEntity<List<Company>> findAllUnenable() {
+        List<Company> companies = (List<Company>) companyService.getEnableCompanies(false);
         if (companies.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -62,6 +62,36 @@ public class CompanyController {
     public ResponseEntity<?> enable(@PathVariable Long id) {
         Company company = companyService.setEnable(id);
         return new ResponseEntity<>(company.isEnabled(),HttpStatus.OK);
+    }
+    @GetMapping("/list")
+    public ResponseEntity<List<Company>> findAllEnable() {
+        List<Company> companies = (List<Company>) companyService.getEnableCompanies(true);
+        if (companies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+    @GetMapping("/recommend/{id}")
+    public ResponseEntity<?> recommend(@PathVariable Long id) {
+        Company company = companyService.changeRecommend(id);
+        return new ResponseEntity<>(company.isRecommended(),HttpStatus.OK);
+    }
+    @GetMapping("/main-page-recommended")
+    public ResponseEntity<?> find8CompanyRecommended() {
+        List<Company> companies = companyService.get8RecommendedCompanies();
+        if (companies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+
+    @GetMapping("/all-recommended")
+    public ResponseEntity<?> findAllCompanyRecommended() {
+        List<Company> companies = companyService.getAllRecommendedCompanies();
+        if (companies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
 }

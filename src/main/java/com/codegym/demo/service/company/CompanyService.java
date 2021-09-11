@@ -3,6 +3,7 @@ package com.codegym.demo.service.company;
 import com.codegym.demo.constant.Constant;
 import com.codegym.demo.dto.request.CompanyRegisterForm;
 import com.codegym.demo.model.Company;
+import com.codegym.demo.model.Post;
 import com.codegym.demo.model.User;
 import com.codegym.demo.repository.CompanyRepository;
 import com.codegym.demo.security.principal.CompanyPrinciple;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +74,8 @@ public class CompanyService implements ICompanyService {
         company.setEmail(companyOptional.get().getEmail());
         company.setCompanyCode(companyOptional.get().getCompanyCode());
         company.setType(companyOptional.get().getType());
+        company.setEnabled(true);
+        company.setRecommended(companyOptional.get().isRecommended());
         if (company.getCompanyName() == null || company.getCompanyName().trim().equals("")) {
             company.setCompanyName(companyOptional.get().getCompanyName());
         }
@@ -113,6 +117,11 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
+    public Iterable<Company> getEnableCompanies(Boolean enable) {
+        return companyRepository.findAllByEnabledOrderByIdAsc(enable);
+    }
+
+    @Override
     public Company register(CompanyRegisterForm companyRegisterForm) {
         Company company = new Company();
         String encode = passwordEncoder.encode(companyRegisterForm.getPassword());
@@ -127,14 +136,36 @@ public class CompanyService implements ICompanyService {
         return companyRepository.save(company);
     }
 
-    public Iterable<Company> getEnableCompanies() {
-        return companyRepository.findAllByEnabledOrderByIdAsc(false);
-    }
-
     @Override
-    public Company setEnable(long id) {
+    public Company setEnable(long id){
         Optional<Company> company = companyRepository.findById(id);
         company.get().setEnabled(true);
         return companyRepository.save(company.get());
+    }
+
+    @Override
+    public Company changeRecommend(long id) {
+        Optional<Company> company = companyRepository.findById(id);
+        company.get().setRecommended(!company.get().isRecommended());
+        return companyRepository.save(company.get());
+    }
+
+    @Override
+    public List<Company> get8RecommendedCompanies() {
+        List<Company> companies = new ArrayList<>(8);
+        List<Company> companyList = (List<Company>)companyRepository.findAllByRecommended(true);
+        for (int i=0;i<companyList.size();i++) {
+            if (i<8){
+                companies.add(companyList.get(i));
+            }else {
+                break;
+            }
+        }
+        return companies;
+    }
+
+    @Override
+    public List<Company> getAllRecommendedCompanies() {
+        return (List<Company>)companyRepository.findAllByRecommended(true);
     }
 }
