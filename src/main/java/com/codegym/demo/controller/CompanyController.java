@@ -77,4 +77,22 @@ public class CompanyController {
         return new ResponseEntity<>(company.isRecommended(),HttpStatus.OK);
     }
 
+    @GetMapping("/main-page-recommended")
+    public ResponseEntity<?> find8CompanyRecommended() {
+        List<Company> companies = companyService.get8RecommendedCompanies();
+        if (companies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+
+    @GetMapping("/all-recommended")
+    public ResponseEntity<?> findAllCompanyRecommended() {
+        List<Company> companies = companyService.getAllRecommendedCompanies();
+        if (companies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+
 }

@@ -26,4 +26,8 @@ public interface ICompanyService extends IGeneralService<Company>, UserDetailsSe
 
     Company changeRecommend(long id);
 
+    List<Company> get8RecommendedCompanies ();
+
+    List<Company> getAllRecommendedCompanies ();
+
 }

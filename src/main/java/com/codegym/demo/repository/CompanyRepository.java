@@ -19,4 +19,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     Iterable<Company> findAllByEnabledOrderByIdAsc(Boolean enable);
 
+    Iterable<Company> findAllByRecommended(Boolean recommend);
+
+
+
 }
