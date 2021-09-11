@@ -45,6 +45,8 @@ public class Company {
 
     private boolean enabled;
 
+    private boolean recommended;
+
     public Company() {
     }
 
@@ -203,5 +205,13 @@ public class Company {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    public void setRecommended(boolean recommended) {
+        this.recommended = recommended;
     }
 }

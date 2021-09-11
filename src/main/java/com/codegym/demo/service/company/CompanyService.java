@@ -72,6 +72,8 @@ public class CompanyService implements ICompanyService {
         company.setEmail(companyOptional.get().getEmail());
         company.setCompanyCode(companyOptional.get().getCompanyCode());
         company.setType(companyOptional.get().getType());
+        company.setEnabled(true);
+        company.setRecommended(companyOptional.get().isRecommended());
         if (company.getCompanyName() == null || company.getCompanyName().trim().equals("")) {
             company.setCompanyName(companyOptional.get().getCompanyName());
         }
@@ -124,17 +126,26 @@ public class CompanyService implements ICompanyService {
         company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
         company.setType(Constant.TypeName.COMPANY);
         company.setEnabled(false);
+        company.setRecommended(false);
         return companyRepository.save(company);
     }
 
-    public Iterable<Company> getEnableCompanies() {
-        return companyRepository.findAllByEnabledOrderByIdAsc(false);
+    @Override
+    public Iterable<Company> getEnableCompanies(Boolean enable) {
+        return companyRepository.findAllByEnabledOrderByIdAsc(enable);
     }
 
     @Override
     public Company setEnable(long id) {
         Optional<Company> company = companyRepository.findById(id);
         company.get().setEnabled(true);
+        return companyRepository.save(company.get());
+    }
+
+    @Override
+    public Company changeRecommend(long id) {
+        Optional<Company> company = companyRepository.findById(id);
+        company.get().setRecommended(!company.get().isRecommended());
         return companyRepository.save(company.get());
     }
 }
