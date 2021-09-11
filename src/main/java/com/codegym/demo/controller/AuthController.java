@@ -32,7 +32,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.codegym.demo.dto.response.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/auth")
