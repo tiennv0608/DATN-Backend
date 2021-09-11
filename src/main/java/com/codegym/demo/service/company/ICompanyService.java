@@ -30,5 +30,4 @@ public interface ICompanyService extends IGeneralService<Company>, UserDetailsSe
 
     List<Company> getAllRecommendedCompanies ();
 
-
 }

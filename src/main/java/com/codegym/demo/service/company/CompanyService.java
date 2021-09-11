@@ -133,6 +133,7 @@ public class CompanyService implements ICompanyService {
         company.setImage(Constant.IMAGE_COMPANY_DEFAULT);
         company.setType(Constant.TypeName.COMPANY);
         company.setEnabled(false);
+        company.setRecommended(false);
         return companyRepository.save(company);
     }
 
@@ -141,6 +142,9 @@ public class CompanyService implements ICompanyService {
         Optional<Company> company = companyRepository.findById(id);
         company.get().setEnabled(true);
         return companyRepository.save(company.get());
+    }
+    public Iterable<Company> getEnableCompanies(Boolean enable) {
+        return companyRepository.findAllByEnabledOrderByIdAsc(enable);
     }
 
     @Override
@@ -167,5 +171,10 @@ public class CompanyService implements ICompanyService {
     @Override
     public List<Company> getAllRecommendedCompanies() {
         return (List<Company>)companyRepository.findAllByRecommended(true);
+    }
+    public Company changeRecommend(long id) {
+        Optional<Company> company = companyRepository.findById(id);
+        company.get().setRecommended(!company.get().isRecommended());
+        return companyRepository.save(company.get());
     }
 }

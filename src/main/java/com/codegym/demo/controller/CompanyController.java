@@ -76,6 +76,7 @@ public class CompanyController {
         Company company = companyService.changeRecommend(id);
         return new ResponseEntity<>(company.isRecommended(),HttpStatus.OK);
     }
+
     @GetMapping("/main-page-recommended")
     public ResponseEntity<?> find8CompanyRecommended() {
         List<Company> companies = companyService.get8RecommendedCompanies();
