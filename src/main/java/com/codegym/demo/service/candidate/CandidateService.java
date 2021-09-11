@@ -32,4 +32,8 @@ public class CandidateService implements ICandidateService{
     }
 
 
+    @Override
+    public Iterable<Candidate> findAllByPostId(Long id) {
+        return candidateRepository.findAllByPostId(id);
+    }
 }

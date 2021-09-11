@@ -30,7 +30,7 @@ private ICandidateService iCandidateService;
     }
     @GetMapping("/{id}")
     public ResponseEntity<Iterable<Candidate>> findByUserId(@PathVariable Long id){
-        List<Candidate> candidates = (List<Candidate>) iCandidateService.getAllByCompanyId(id);
+        List<Candidate> candidates = (List<Candidate>) iCandidateService.findAllByPostId(id);
         if (candidates.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
