@@ -130,8 +130,9 @@ public class CompanyService implements ICompanyService {
         return companyRepository.save(company);
     }
 
-    public Iterable<Company> getEnableCompanies() {
-        return companyRepository.findAllByEnabledOrderByIdAsc(false);
+    @Override
+    public Iterable<Company> getEnableCompanies(Boolean enable) {
+        return companyRepository.findAllByEnabledOrderByIdAsc(enable);
     }
 
     @Override

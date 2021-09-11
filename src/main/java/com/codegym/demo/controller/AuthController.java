@@ -114,8 +114,6 @@ public class AuthController {
             Company company = companyService.register(registerForm);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
             company.setCompanyCode(companyCode);
-            company.setEnabled(false);
-            company.setRecommended(false);
             Company company1 = companyService.save(company);
             if (company1 != null) {
                 emailService.sendVerificationEmailCompany(company);
