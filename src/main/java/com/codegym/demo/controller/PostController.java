@@ -54,6 +54,7 @@ public class PostController {
             post.setCode("CODE" + company.getCompanyCode() + post.getCategory().getId());
             post.setAddress(post.getAddress() + ", " + post.getCity().getName());
             post.setStatus(true);
+            post.setRecommended(false);
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
