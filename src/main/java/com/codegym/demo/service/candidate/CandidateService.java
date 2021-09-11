@@ -30,4 +30,10 @@ public class CandidateService implements ICandidateService{
     public void remove(Long id) {
         candidateRepository.deleteById(id);
     }
+
+
+    @Override
+    public Iterable<Candidate> findAllByPostId(Long id) {
+        return candidateRepository.findAllByPostId(id);
+    }
 }
