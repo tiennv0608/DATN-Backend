@@ -20,8 +20,10 @@ public interface ICompanyService extends IGeneralService<Company>, UserDetailsSe
 
     Company register(CompanyRegisterForm companyRegisterForm);
 
-    Iterable<Company> getEnableCompanies ();
+    Iterable<Company> getEnableCompanies (Boolean enable);
 
     Company setEnable(long id);
+
+    Company changeRecommend(long id);
 
 }

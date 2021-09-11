@@ -32,7 +32,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.codegym.demo.dto.response.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/auth")
@@ -115,6 +114,8 @@ public class AuthController {
             Company company = companyService.register(registerForm);
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
             company.setCompanyCode(companyCode);
+            company.setEnabled(false);
+            company.setRecommended(false);
             Company company1 = companyService.save(company);
             if (company1 != null) {
                 emailService.sendVerificationEmailCompany(company);
