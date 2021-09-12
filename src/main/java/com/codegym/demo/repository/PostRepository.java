@@ -70,4 +70,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "WHERE recommended IS TRUE LIMIT 6")
     Iterable<Post> findTop6PostRecommended();
 
+
 }
