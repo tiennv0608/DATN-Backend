@@ -9,7 +9,7 @@ public class Candidate {
     private Long id;
 
     @ManyToOne
-    private Company company;
+    private Post post;
 
     @ManyToOne
     private CV cv;
@@ -17,8 +17,9 @@ public class Candidate {
     public Candidate() {
     }
 
-    public Candidate(Company company, CV cv) {
-        this.company = company;
+
+    public Candidate(Post post, CV cv) {
+        this.post = post;
         this.cv = cv;
     }
 
@@ -30,12 +31,12 @@ public class Candidate {
         this.id = id;
     }
 
-    public Company getCompany() {
-        return company;
+    public Post getPost() {
+        return post;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public CV getCv() {

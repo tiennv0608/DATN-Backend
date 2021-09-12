@@ -54,6 +54,7 @@ public class PostController {
             post.setCode("CODE" + company.getCompanyCode() + post.getCategory().getId());
             post.setAddress(post.getAddress() + ", " + post.getCity().getName());
             post.setStatus(true);
+            post.setRecommended(false);
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -208,5 +209,31 @@ public class PostController {
     @GetMapping("/new")
     private ResponseEntity<?> getnewPosts() {
         return new ResponseEntity<>(iPostService.find6PostsOrderByIdDesc(), HttpStatus.OK);
+    }
+
+    @GetMapping("/recommended")
+    public ResponseEntity<List<Post>> findAllPostByRecommended() {
+        List<Post> posts = (List<Post>) iPostService.findPostsByRecommended();
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+    @PutMapping("/recommended/{id}")
+    public ResponseEntity<ResponseBody> setRecommended(@PathVariable Long id) {
+        Optional<Post> post = iPostService.findById(id);
+        if (!post.isPresent()) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (post.get().getQuantity() == 0) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        if (post.get().isRecommended() == true) {
+            post.get().setRecommended(false);
+        } else {
+            post.get().setRecommended(true);
+        }
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post.get())), HttpStatus.OK);
     }
 }
