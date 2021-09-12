@@ -171,4 +171,14 @@ public class PostService implements IPostService {
         return postRepository.findPostsByRecommendedIsTrue();
     }
 
+    @Override
+    public Iterable<Integer> findTop1Company() {
+        return postRepository.findTop1Company();
+    }
+
+    @Override
+    public Iterable<Post> findTop6PostRecommended() {
+        return postRepository.findTop6PostRecommended();
+    }
+
 }

@@ -36,5 +36,9 @@ public interface IPostService extends IGeneralService<Post> {
 
     Iterable<Post> findPostsByRecommended();
 
+    Iterable<Integer> findTop1Company();
+
+    Iterable<Post> findTop6PostRecommended();
+
 
 }

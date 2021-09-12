@@ -89,6 +89,15 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+    @GetMapping("/get-top-1-companies")
+    public ResponseEntity<Iterable<Integer>> findTop1Company() {
+        List<Integer> list = (List<Integer>) iPostService.findTop1Company();
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ResponseBody> editPost(@PathVariable Long id, @RequestBody Post post) {
         Optional<Post> postOptional = iPostService.findById(id);
@@ -212,8 +221,17 @@ public class PostController {
     }
 
     @GetMapping("/recommended")
-    public ResponseEntity<List<Post>> findAllPostByRecommended() {
+    public ResponseEntity<Iterable<Post>> findAllPostByRecommended() {
         List<Post> posts = (List<Post>) iPostService.findPostsByRecommended();
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+    @GetMapping("/top-6-recommended")
+    public ResponseEntity<Iterable<Post>> findTop6PostRecommended() {
+        List<Post> posts = (List<Post>) iPostService.findTop6PostRecommended();
         if (posts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
