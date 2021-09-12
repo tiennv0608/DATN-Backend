@@ -7,7 +7,7 @@ public class Exp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String sill;
+    private String skill;
     private Integer year;
     private Integer salary;
     @ManyToOne
@@ -18,14 +18,14 @@ public class Exp {
 
     public Exp(Long id, String sill, Integer year, User user) {
         this.id = id;
-        this.sill = sill;
+        this.skill = sill;
         this.year = year;
         this.user = user;
     }
 
-    public Exp(Long id, String sill, Integer year, Integer salary, User user) {
+    public Exp(Long id, String skill, Integer year, Integer salary, User user) {
         this.id = id;
-        this.sill = sill;
+        this.skill = skill;
         this.year = year;
         this.salary = salary;
         this.user = user;
@@ -47,12 +47,12 @@ public class Exp {
         this.id = id;
     }
 
-    public String getSill() {
-        return sill;
+    public String getSkill() {
+        return skill;
     }
 
-    public void setSill(String work) {
-        this.sill = work;
+    public void setSkill(String work) {
+        this.skill = work;
     }
 
     public Integer getYear() {
