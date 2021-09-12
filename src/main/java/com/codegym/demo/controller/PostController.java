@@ -229,6 +229,15 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+    @GetMapping("/top-6-recommended")
+    public ResponseEntity<Iterable<Post>> findTop6PostRecommended() {
+        List<Post> posts = (List<Post>) iPostService.findTop6PostRecommended();
+        if (posts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
     @PutMapping("/recommended/{id}")
     public ResponseEntity<ResponseBody> setRecommended(@PathVariable Long id) {
         Optional<Post> post = iPostService.findById(id);

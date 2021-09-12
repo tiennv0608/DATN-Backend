@@ -65,4 +65,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByIdDesc();
 
     Iterable<Post> findPostsByRecommendedIsTrue();
+
+    @Query(nativeQuery = true, value = "SELECT * FROM post\n" +
+            "WHERE recommended IS TRUE LIMIT 6")
+    Iterable<Post> findTop6PostRecommended();
+
 }
