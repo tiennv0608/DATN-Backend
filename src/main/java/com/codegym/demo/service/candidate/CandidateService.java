@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CandidateService implements ICandidateService{
+public class CandidateService implements ICandidateService {
     @Autowired
     private CandidateRepository candidateRepository;
+
     @Override
     public Iterable<Candidate> findAll() {
         return candidateRepository.findAll();
@@ -36,4 +37,10 @@ public class CandidateService implements ICandidateService{
     public Iterable<Candidate> findAllByPostId(Long id) {
         return candidateRepository.findAllByPostId(id);
     }
+
+    @Override
+    public Boolean existsByCv_IdAndPostId(Long cvId, Long postId) {
+        return candidateRepository.existsByCv_IdAndPostId(cvId, postId);
+    }
+
 }
