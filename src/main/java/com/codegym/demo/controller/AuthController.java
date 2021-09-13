@@ -118,9 +118,9 @@ public class AuthController {
             String companyCode = company.getShortName().substring(0, 3) + company.getId() + (int) (Math.random() * (9999 - 1000) + 1000);
             company.setCompanyCode(companyCode);
             Company company1 = companyService.save(company);
-            if (company1 != null) {
-                emailService.sendVerificationEmailCompany(company);
-            }
+//            if (company1 != null) {
+//                emailService.sendVerificationEmailCompany(company);
+//            }
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, company1), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
