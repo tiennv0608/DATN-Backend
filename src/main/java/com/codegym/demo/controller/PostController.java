@@ -2,9 +2,11 @@ package com.codegym.demo.controller;
 
 import com.codegym.demo.dto.response.PostResponse;
 import com.codegym.demo.dto.response.Response;
+import com.codegym.demo.model.City;
 import com.codegym.demo.model.Company;
 import com.codegym.demo.model.Post;
 import com.codegym.demo.service.category.ICategoryService;
+import com.codegym.demo.service.city.ICityService;
 import com.codegym.demo.service.company.ICompanyService;
 import com.codegym.demo.service.post.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class PostController {
     private ICompanyService iCompanyService;
     @Autowired
     private ICategoryService iCategoryService;
+    @Autowired
+    private ICityService iCityService;
 
     @GetMapping
     public ResponseEntity<Iterable<Post>> findAll() {
@@ -50,9 +54,12 @@ public class PostController {
             if (post.getQuantity() == 0) {
                 return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
             }
+            Optional<City> city= iCityService.findById(post.getCity().getId());
             Company company = iCompanyService.findById(post.getCompany().getId()).get();
+            System.out.println(city
+            );
             post.setCode("CODE" + company.getCompanyCode() + post.getCategory().getId());
-            post.setAddress(post.getAddress() + ", " + post.getCity().getName());
+            post.setAddress(post.getAddress() + ", " +city.get().getName());
             post.setStatus(true);
             post.setRecommended(false);
             return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, iPostService.save(post)), HttpStatus.CREATED);
