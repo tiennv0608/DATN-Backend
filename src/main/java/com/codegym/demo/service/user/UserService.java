@@ -7,14 +7,11 @@ import com.codegym.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.codegym.demo.security.principal.UserPrinciple;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @Service
@@ -24,7 +21,6 @@ public class UserService implements IUserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
 
     @Override
     public Iterable<User> findAll() {
@@ -38,6 +34,7 @@ public class UserService implements IUserService {
 
     @Override
     public User save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
