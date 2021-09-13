@@ -215,7 +215,7 @@ public class AuthController {
         }
         return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, company.get()), HttpStatus.OK);
     }
-    @PostMapping("/user/{id}/change-password")
+    @PostMapping("/users/{id}/change-password")
     public ResponseEntity<?> changeUserPassword(@Valid @RequestBody UserPasswordForm userPasswordForm, @PathVariable Long id, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
