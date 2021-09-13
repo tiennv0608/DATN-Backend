@@ -3,12 +3,14 @@ package com.codegym.demo.controller;
 import com.codegym.demo.model.Company;
 import com.codegym.demo.model.Post;
 import com.codegym.demo.service.company.ICompanyService;
+import com.codegym.demo.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,8 @@ public class CompanyController {
     ICompanyService companyService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    EmailService emailService;
 
     @GetMapping
     public ResponseEntity<Iterable<Company>> findAll() {
@@ -58,11 +62,18 @@ public class CompanyController {
         }
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
+
     @GetMapping("/enable/{id}")
     public ResponseEntity<?> enable(@PathVariable Long id) {
         Company company = companyService.setEnable(id);
-        return new ResponseEntity<>(company.isEnabled(),HttpStatus.OK);
+        try {
+            emailService.sendVerificationEmailCompany(company);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(company.isEnabled(), HttpStatus.OK);
     }
+
     @GetMapping("/list")
     public ResponseEntity<List<Company>> findAllEnable() {
         List<Company> companies = (List<Company>) companyService.getEnableCompanies(true);
@@ -71,10 +82,11 @@ public class CompanyController {
         }
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
+
     @GetMapping("/recommend/{id}")
     public ResponseEntity<?> recommend(@PathVariable Long id) {
         Company company = companyService.changeRecommend(id);
-        return new ResponseEntity<>(company.isRecommended(),HttpStatus.OK);
+        return new ResponseEntity<>(company.isRecommended(), HttpStatus.OK);
     }
 
     @GetMapping("/main-page-recommended")
