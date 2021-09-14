@@ -124,7 +124,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public Company register(CompanyRegisterForm companyRegisterForm) {
         Company company = new Company();
-        String encode = passwordEncoder.encode(companyRegisterForm.getPassword());
+        String encode = passwordEncoder.encode(companyRegisterForm.getPassword().trim());
         company.setCompanyName(companyRegisterForm.getCompanyName().trim());
         company.setShortName(companyRegisterForm.getShortName().trim());
         company.setEmail(companyRegisterForm.getEmail().trim());

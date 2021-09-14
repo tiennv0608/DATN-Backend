@@ -215,4 +215,27 @@ public class AuthController {
         }
         return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, company.get()), HttpStatus.OK);
     }
+    @PostMapping("/users/{id}/change-password")
+    public ResponseEntity<?> changeUserPassword(@Valid @RequestBody UserPasswordForm userPasswordForm, @PathVariable Long id, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(new ResponseBody(Response.OBJECT_INVALID, null), HttpStatus.BAD_REQUEST);
+        }
+        Optional<User> user = userService.findById(id);
+        if (!user.isPresent()) {
+            return new ResponseEntity<>(new ResponseBody(Response.SYSTEM_ERROR, null), HttpStatus.NOT_FOUND);
+        }
+        if (userPasswordForm.getNewPassword().trim().equals(userPasswordForm.getCurrentPassword().trim())) {
+            return new ResponseEntity<>(new ResponseBody(Response.NEW_PASSWORD_IS_DUPLICATED, null), HttpStatus.CONFLICT);
+        }
+        boolean matches = passwordEncoder.matches(userPasswordForm.getCurrentPassword(), user.get().getPassword());
+        if (userPasswordForm.getNewPassword() != null) {
+            if (matches) {
+                user.get().setPassword(passwordEncoder.encode(userPasswordForm.getNewPassword().trim()));
+                userService.save(user.get());
+            } else {
+                return new ResponseEntity<>(new ResponseBody(Response.PASSWORD_IS_NOT_TRUE, null), HttpStatus.CONFLICT);
+            }
+        }
+        return new ResponseEntity<>(new ResponseBody(Response.SUCCESS, user.get()), HttpStatus.OK);
+    }
 }
