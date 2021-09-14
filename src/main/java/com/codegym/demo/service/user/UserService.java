@@ -34,7 +34,6 @@ public class UserService implements IUserService {
 
     @Override
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -58,7 +57,7 @@ public class UserService implements IUserService {
         User user = new User();
         user.setName(userRegisterForm.getName().trim());
         user.setEmail(userRegisterForm.getEmail().trim());
-        String encode = passwordEncoder.encode(userRegisterForm.getPassword());
+        String encode = passwordEncoder.encode(userRegisterForm.getPassword().trim());
         user.setPassword(encode);
         user.setPhone(userRegisterForm.getPhone());
         user.setType(Constant.TypeName.USER);
